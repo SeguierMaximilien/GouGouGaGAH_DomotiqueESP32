@@ -2,7 +2,7 @@
 
 
 
-#include "PINOUT.h"
+#include "pinout.h"
 
 void setup() {
   
