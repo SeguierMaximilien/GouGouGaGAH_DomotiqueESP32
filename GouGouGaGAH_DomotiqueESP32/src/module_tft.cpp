@@ -61,8 +61,8 @@ static void tft_diagnostic() {
 // fait tout le tour de l'écran, où la lettre se lit normalement (pas en miroir) et où
 // les carrés R V B sont dans cet ordre, en bas. Mets ensuite TFT_TEST_ORIENTATIONS à 0
 // et TFT_CONFIG à cette lettre.
-#define TFT_TEST_ORIENTATIONS 1
-#define TFT_CONFIG 'F'
+#define TFT_TEST_ORIENTATIONS 0
+#define TFT_CONFIG 'H' // choisi d'après le test : rendu correct sur ce module
 
 struct ConfigEcran {
   char lettre;

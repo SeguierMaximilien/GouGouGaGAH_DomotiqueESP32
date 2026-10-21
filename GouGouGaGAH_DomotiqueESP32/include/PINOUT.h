@@ -30,7 +30,7 @@
 // ---- Capteur MQ (analogique) ----
 #define MQ_AO       1
 
-// ---- Commande relais ----
-#define CMD_RELAY   10
+// ---- Relais (via transistor, actif a l'etat haut) ----
+#define RELAIS_PIN  10
 
 #endif // PINOUT_H

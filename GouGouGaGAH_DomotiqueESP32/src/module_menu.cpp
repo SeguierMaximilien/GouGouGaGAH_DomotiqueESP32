@@ -4,10 +4,11 @@
 #include "module_bmp280.h"
 #include "module_mq.h"
 #include "module_rfid.h"
+#include "module_relais.h"
 
 // Pas d'accents à l'écran : la police par défaut d'Adafruit_GFX ne les affiche pas.
 
-enum Ecran { MENU, LUMIERE, TEMPERATURE, GAZ, BADGE, TACTILE, TOUT };
+enum Ecran { MENU, LUMIERE, TEMPERATURE, GAZ, BADGE, TACTILE, TOUT, RELAIS };
 
 struct Bouton {
   int x, y, w, h;
@@ -16,9 +17,10 @@ struct Bouton {
   Ecran cible;
 };
 
-static const int NB_BOUTONS = 6;
+static const int NB_BOUTONS = 7;
 static Bouton boutons[NB_BOUTONS];
 static Bouton retour;
+static Bouton boutonRelais; // gros bouton ON/OFF de l'écran Relais
 
 static Ecran ecranActuel = MENU;
 static unsigned long dernierRafraichissement = 0;
@@ -72,6 +74,14 @@ static void afficherMenu() {
   for (int i = 0; i < NB_BOUTONS; i++) dessinerBouton(boutons[i]);
 }
 
+static void dessinerEtatRelais() {
+  bool actif = relais_estActif();
+  boutonRelais.texte = actif ? "ON" : "OFF";
+  boutonRelais.couleur = actif ? ILI9341_DARKGREEN : ILI9341_MAROON;
+  dessinerBouton(boutonRelais);
+  ecrireValeur(boutonRelais.y + boutonRelais.h + 10, "Touche pour basculer", 2, ILI9341_WHITE);
+}
+
 static void afficherEcran(Ecran e) {
   ecranActuel = e;
   dernierRafraichissement = 0; // force un rafraîchissement immédiat
@@ -95,6 +105,10 @@ static void afficherEcran(Ecran e) {
       tft.print("Touche les 4 coins et note les valeurs brutes");
       break;
     case TOUT:        dessinerTitre("Tous les capteurs"); break;
+    case RELAIS:
+      dessinerTitre("Relais");
+      dessinerEtatRelais();
+      break;
   }
   dessinerBouton(retour);
 }
@@ -138,6 +152,7 @@ static void rafraichir() {
       ecrireValeur(115, "Pression: " + textePression(), 2, ILI9341_CYAN);
       ecrireValeur(145, "Gaz     : " + String(mq_readPercent(), 1) + " %", 2, ILI9341_GREEN);
       ecrireValeur(175, "Badge   : " + (dernierBadge.length() ? dernierBadge : String("-")), 2, ILI9341_WHITE);
+      ecrireValeur(205, String("Relais  : ") + (relais_estActif() ? "ON" : "OFF"), 2, ILI9341_WHITE);
       break;
     default:
       break;
@@ -161,17 +176,19 @@ void menu_setup() {
   // Grille de 3 x 2 boutons qui s'adapte à la taille (paysage 320x240 ou portrait 240x320)
   const int marge = 8, haut = 40;
   int w = (tft.width() - 4 * marge) / 3;
-  int h = (tft.height() - haut - 3 * marge) / 2;
-  const char *textes[NB_BOUTONS] = { "Lumiere", "Temp", "Gaz", "Badge", "Tactile", "Tout" };
+  int h = (tft.height() - haut - 4 * marge) / 3; // 3 lignes de 3 boutons
+  const char *textes[NB_BOUTONS] = { "Lumiere", "Temp", "Gaz", "Badge", "Tactile", "Tout", "Relais" };
   uint16_t couleurs[NB_BOUTONS] = { ILI9341_OLIVE, ILI9341_MAROON, ILI9341_DARKGREEN,
-                                    ILI9341_PURPLE, ILI9341_DARKCYAN, ILI9341_NAVY };
-  Ecran cibles[NB_BOUTONS] = { LUMIERE, TEMPERATURE, GAZ, BADGE, TACTILE, TOUT };
+                                    ILI9341_PURPLE, ILI9341_DARKCYAN, ILI9341_NAVY,
+                                    ILI9341_ORANGE };
+  Ecran cibles[NB_BOUTONS] = { LUMIERE, TEMPERATURE, GAZ, BADGE, TACTILE, TOUT, RELAIS };
   for (int i = 0; i < NB_BOUTONS; i++) {
     int col = i % 3, ligne = i / 3;
     boutons[i] = { marge + col * (w + marge), haut + marge + ligne * (h + marge), w, h,
                    textes[i], couleurs[i], cibles[i] };
   }
   retour = { 4, 4, 70, 32, "<", ILI9341_DARKGREY, MENU };
+  boutonRelais = { tft.width() / 2 - 80, 70, 160, 90, "OFF", ILI9341_MAROON, RELAIS };
 
   afficherEcran(MENU);
 }
@@ -191,13 +208,21 @@ void menu_loop() {
     testerTactile(x, y);
   }
   if (touche && !doigtPose) {
-    // On vient de poser le doigt
+    // On vient de poser le doigt : on l'affiche sur le moniteur série pour la calibration
+    int rx = -1, ry = -1;
+    tft_checkTouch(rx, ry);
+    Serial.printf("[Tactile] brut x=%d y=%d -> pixel x=%d y=%d\n", rx, ry, x, y);
     if (ecranActuel == MENU) {
       for (int i = 0; i < NB_BOUTONS; i++) {
         if (estDans(boutons[i], x, y)) { afficherEcran(boutons[i].cible); break; }
       }
-    } else if (estDans(retour, x, y)) {
+    } else if (y < 40) {
+      // Toute la barre de titre sert de bouton retour (plus facile à toucher
+      // tant que le tactile n'est pas calibré)
       afficherEcran(MENU);
+    } else if (ecranActuel == RELAIS && estDans(boutonRelais, x, y)) {
+      relais_basculer();
+      dessinerEtatRelais();
     }
   }
   doigtPose = touche;

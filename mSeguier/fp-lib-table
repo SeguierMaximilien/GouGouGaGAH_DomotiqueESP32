@@ -1,0 +1,5 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "GouGouGaGAH")(type "KiCad")(uri "${KIPRJMOD}/pretty/GouGouGaGAH.pretty")(options "")(descr "Empreinte ESP32-C6-DevKitC-1 (bibliotheque Espressif, CC-BY-SA 4.0)"))
+  (lib (name "ESP32_C6_modules")(type "KiCad")(uri "${KIPRJMOD}/pretty/ESP32_C6_modules.pretty")(options "")(descr "Empreintes des modules du projet"))
+)

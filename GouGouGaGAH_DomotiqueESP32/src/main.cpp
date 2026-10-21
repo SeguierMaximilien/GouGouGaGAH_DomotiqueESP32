@@ -9,6 +9,7 @@
 #include "module_rfid.h"
 #include "module_tft.h"
 #include "module_menu.h"
+#include "module_relais.h"
 
 void setup() {
   Serial.begin(115200);
@@ -29,6 +30,7 @@ void setup() {
   bmp280_setup();
   mq_setup();
   rfid_setup();
+  relais_setup();
   tft_setup();
   menu_setup(); // menu tactile : un bouton par composant
 }
