@@ -1,7 +1,7 @@
 # mSeguier : carte domotique ESP32-C6 (SAE3.ESE.01.02)
 
 Projet KiCad organisé selon les consignes de routage : `docs/`, `fab/`, `lib/`, `pretty/`,
-`mSeguier.kicad_pro`, `mSeguier.kicad_sch`, `mSeguier.kicad_pcb`. Ouvre `mSeguier.kicad_pro` avec KiCad 10 (le PCB est au format KiCad 10, avec les empreintes de la bibliothèque KiCad 10).
+`mSeguier.kicad_pro`, `mSeguier.kicad_sch`, `mSeguier.kicad_pcb`. Ouvre `mSeguier.kicad_pro` avec KiCad 9 ou 10 (fichiers au format KiCad 9).
 
 ## Carte
 - 170 × 90 mm (maxi autorisé), coins arrondis R5, cotes sur Dwgs.User.
@@ -33,7 +33,7 @@ Pas de condensateurs : C1, C2 et C3 ont été retirés à la demande (les module
 
 ## Vérifications faites
 - ERC : 0 erreur, 0 avertissement.
-- DRC (KiCad 10.0.7, zones re-remplies, parité schéma) : 0 erreur, 0 avertissement, 0 non routé.
+- DRC (KiCad 9.0.1 et 10.0.7, zones re-remplies, parité schéma) : 0 erreur, 0 avertissement, 0 non routé.
 
 ## Ce qu'il te reste à faire
 - Vérifier que le nom du projet (`mSeguier`) est bien le tien.
