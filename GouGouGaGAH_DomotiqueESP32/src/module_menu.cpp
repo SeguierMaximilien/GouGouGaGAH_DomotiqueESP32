@@ -8,7 +8,7 @@
 
 // Pas d'accents à l'écran : la police par défaut d'Adafruit_GFX ne les affiche pas.
 
-enum Ecran { MENU, LUMIERE, TEMPERATURE, GAZ, BADGE, TACTILE, TOUT, RELAIS, CALIBRER };
+enum Ecran { MENU, LUMIERE, TEMPERATURE, GAZ, BADGE, TACTILE, TOUT, RELAIS };
 
 struct Bouton {
   int x, y, w, h;
@@ -17,7 +17,7 @@ struct Bouton {
   Ecran cible;
 };
 
-static const int NB_BOUTONS = 8;
+static const int NB_BOUTONS = 7;
 static Bouton boutons[NB_BOUTONS];
 static Bouton retour;
 static Bouton boutonRelais; // gros bouton ON/OFF de l'écran Relais
@@ -25,7 +25,6 @@ static Bouton boutonRelais; // gros bouton ON/OFF de l'écran Relais
 static Ecran ecranActuel = MENU;
 static unsigned long dernierRafraichissement = 0;
 static bool doigtPose = false; // pour ne réagir qu'au moment où on pose le doigt
-static unsigned long dernierContact = 0; // anti-rebond : relâché seulement après 150 ms sans contact
 static String dernierBadge = "";
 
 // ---------------------------------------------------------------- dessin ----
@@ -90,11 +89,6 @@ static void afficherEcran(Ecran e) {
 
   switch (e) {
     case MENU:        afficherMenu(); return;
-    case CALIBRER:
-      tft_calibrerTactile();
-      doigtPose = true; // le stylet vient d'être levé : pas de clic fantôme
-      afficherEcran(MENU);
-      return;
     case LUMIERE:     dessinerTitre("Lumiere BH1750"); break;
     case TEMPERATURE: dessinerTitre("BMP280"); break;
     case GAZ:         dessinerTitre("Gaz MQ"); break;
@@ -108,7 +102,7 @@ static void afficherEcran(Ecran e) {
       tft.setTextSize(1);
       tft.setTextColor(ILI9341_LIGHTGREY);
       tft.setCursor(10, tft.height() - 12);
-      tft.print("Le point rouge doit suivre le stylet (sinon : Calib)");
+      tft.print("Touche les 4 coins et note les valeurs brutes");
       break;
     case TOUT:        dessinerTitre("Tous les capteurs"); break;
     case RELAIS:
@@ -183,11 +177,11 @@ void menu_setup() {
   const int marge = 8, haut = 40;
   int w = (tft.width() - 4 * marge) / 3;
   int h = (tft.height() - haut - 4 * marge) / 3; // 3 lignes de 3 boutons
-  const char *textes[NB_BOUTONS] = { "Lumiere", "Temp", "Gaz", "Badge", "Tactile", "Tout", "Relais", "Calib" };
+  const char *textes[NB_BOUTONS] = { "Lumiere", "Temp", "Gaz", "Badge", "Tactile", "Tout", "Relais" };
   uint16_t couleurs[NB_BOUTONS] = { ILI9341_OLIVE, ILI9341_MAROON, ILI9341_DARKGREEN,
                                     ILI9341_PURPLE, ILI9341_DARKCYAN, ILI9341_NAVY,
-                                    ILI9341_ORANGE, ILI9341_DARKGREY };
-  Ecran cibles[NB_BOUTONS] = { LUMIERE, TEMPERATURE, GAZ, BADGE, TACTILE, TOUT, RELAIS, CALIBRER };
+                                    ILI9341_ORANGE };
+  Ecran cibles[NB_BOUTONS] = { LUMIERE, TEMPERATURE, GAZ, BADGE, TACTILE, TOUT, RELAIS };
   for (int i = 0; i < NB_BOUTONS; i++) {
     int col = i % 3, ligne = i / 3;
     boutons[i] = { marge + col * (w + marge), haut + marge + ligne * (h + marge), w, h,
@@ -196,10 +190,6 @@ void menu_setup() {
   retour = { 4, 4, 70, 32, "<", ILI9341_DARKGREY, MENU };
   boutonRelais = { tft.width() / 2 - 80, 70, 160, 90, "OFF", ILI9341_MAROON, RELAIS };
 
-  // Sans calibration, les boutons ne tombent pas sous le stylet : on calibre d'abord
-  if (!tft_estCalibre()) {
-    while (!tft_calibrerTactile()) {}
-  }
   afficherEcran(MENU);
 }
 
@@ -235,12 +225,7 @@ void menu_loop() {
       dessinerEtatRelais();
     }
   }
-  if (touche) {
-    doigtPose = true;
-    dernierContact = millis();
-  } else if (millis() - dernierContact > 150) {
-    doigtPose = false;
-  }
+  doigtPose = touche;
 
   if (ecranActuel != MENU && millis() - dernierRafraichissement > 500) {
     dernierRafraichissement = millis();

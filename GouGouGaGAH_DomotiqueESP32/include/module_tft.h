@@ -19,15 +19,8 @@ void tft_printLine(int x, int y, const String &text);
 bool tft_checkTouch(int &x, int &y);
 
 // Comme tft_checkTouch, mais convertit en pixels écran (0..tft.width()-1, 0..tft.height()-1)
-// avec la calibration enregistrée (voir tft_calibrerTactile).
+// à partir des valeurs de calibration TOUCH_* définies dans module_tft.cpp.
 bool tft_checkTouchPixel(int &x, int &y);
-
-// Affiche 4 croix à toucher, calcule la calibration et l'enregistre en flash.
-// Bloquant pendant la calibration. Retourne false si les points sont incohérents.
-bool tft_calibrerTactile();
-
-// true si une calibration a déjà été enregistrée.
-bool tft_estCalibre();
 
 // Accès direct à l'écran, pour les modules qui dessinent eux-mêmes (menu...).
 Adafruit_ILI9341 &tft_get();

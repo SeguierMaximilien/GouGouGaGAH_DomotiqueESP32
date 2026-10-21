@@ -4,8 +4,6 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_ILI9341.h>
 #include <XPT2046_Touchscreen.h>
-#include <Preferences.h>
-#include <algorithm>
 
 // Ton module n'est pas un vrai ILI9341 : sa mémoire est organisée nativement en
 // 320 x 240 (le grand côté sert de lignes), et il ignore l'échange lignes/colonnes
@@ -23,49 +21,16 @@ public:
 static EcranClone tft(TFT_CS, TFT_DC, TFT_RST);
 static XPT2046_Touchscreen touch(TOUCH_CS); // pas d'IRQ, lecture en polling
 
-// ---- Calibration du tactile ----
-// Valeurs brutes lues aux bords gauche/droite (X) et haut/bas (Y) de l'écran.
-// Un MIN plus grand que le MAX veut dire que l'axe est inversé (map() le gère).
-// "echange" : l'axe X de l'écran correspond à l'axe Y brut du tactile.
-// Ces valeurs par défaut sont remplacées par celles de l'écran "Calibrer",
-// enregistrées en mémoire flash (elles survivent au redémarrage et au reflash).
-struct CalibTactile {
-  int xMin, xMax, yMin, yMax;
-  bool echange;
-};
-static CalibTactile calib = { 300, 3800, 300, 3800, false };
-static bool calibre = false;
-
-static const int TOUCH_PRESSION_MIN = 400; // en dessous, appui trop léger : ignoré
-
-static void tft_chargerCalibration() {
-  Preferences prefs;
-  prefs.begin("tactile", true);
-  calibre = prefs.isKey("xMin");
-  if (calibre) {
-    calib.xMin = prefs.getInt("xMin");
-    calib.xMax = prefs.getInt("xMax");
-    calib.yMin = prefs.getInt("yMin");
-    calib.yMax = prefs.getInt("yMax");
-    calib.echange = prefs.getBool("echange");
-    Serial.printf("[Tactile] Calibration chargee : X %d..%d  Y %d..%d  echange=%d\n",
-                  calib.xMin, calib.xMax, calib.yMin, calib.yMax, calib.echange);
-  } else {
-    Serial.println(F("[Tactile] Pas encore calibre : menu > Calibrer"));
-  }
-  prefs.end();
-}
-
-static void tft_enregistrerCalibration() {
-  Preferences prefs;
-  prefs.begin("tactile", false);
-  prefs.putInt("xMin", calib.xMin);
-  prefs.putInt("xMax", calib.xMax);
-  prefs.putInt("yMin", calib.yMin);
-  prefs.putInt("yMax", calib.yMax);
-  prefs.putBool("echange", calib.echange);
-  prefs.end();
-}
+// ---- Calibration du tactile (valeurs brutes aux bords de l'écran) ----
+// Valeurs typiques pour un ILI9341 2.8". Pour les ajuster : écran "Tactile" du menu,
+// touche les 4 coins et recopie les valeurs brutes affichées.
+#define TOUCH_X_MIN  300
+#define TOUCH_X_MAX  3800
+#define TOUCH_Y_MIN  300
+#define TOUCH_Y_MAX  3800
+// Passe à 1 si le point touché apparaît en miroir (gauche/droite ou haut/bas).
+#define TOUCH_INVERT_X 0
+#define TOUCH_INVERT_Y 0
 
 // Lit un registre de l'écran (lecture SPI générique, valable pour ILI9341 et ST7789).
 // Le premier octet renvoyé par l'écran est un octet "fantôme", d'où index + 1.
@@ -162,8 +127,7 @@ void tft_setup() {
   tft_diagnostic();
   tft.fillScreen(ILI9341_BLACK);
   touch.begin();
-  touch.setRotation(0); // axes bruts : la calibration gère sens et échange des axes
-  tft_chargerCalibration();
+  touch.setRotation(1); // paysage (à ajuster avec TOUCH_INVERT_* si besoin)
   Serial.println(F("[TFT] OK (verifier visuellement l'ecran)"));
   Serial.println(F("[Tactile] OK (touche l'ecran pour tester)"));
 }
@@ -196,135 +160,24 @@ void tft_printLine(int x, int y, const String &text) {
   tft.print(text);
 }
 
-// Le premier échantillon d'un appui est souvent faux (stylet pas encore bien posé) :
-// on lit plusieurs points, on garde ceux assez appuyés et on prend la médiane.
 bool tft_checkTouch(int &x, int &y) {
   if (!touch.touched()) return false;
-  const int N = 7;
-  int xs[N], ys[N], n = 0;
-  for (int i = 0; i < N; i++) {
-    TS_Point p = touch.getPoint();
-    if (p.z >= TOUCH_PRESSION_MIN) {
-      xs[n] = p.x;
-      ys[n] = p.y;
-      n++;
-    }
-    delay(2);
-  }
-  if (n < 4) return false; // appui trop léger ou instable
-  std::sort(xs, xs + n);
-  std::sort(ys, ys + n);
-  x = xs[n / 2];
-  y = ys[n / 2];
+  TS_Point p = touch.getPoint();
+  x = p.x;
+  y = p.y;
   return true;
 }
 
 bool tft_checkTouchPixel(int &x, int &y) {
   int rx, ry;
   if (!tft_checkTouch(rx, ry)) return false;
-  int a = calib.echange ? ry : rx;
-  int b = calib.echange ? rx : ry;
-  x = constrain(map(a, calib.xMin, calib.xMax, 0, tft.width() - 1), 0, tft.width() - 1);
-  y = constrain(map(b, calib.yMin, calib.yMax, 0, tft.height() - 1), 0, tft.height() - 1);
+  x = map(rx, TOUCH_X_MIN, TOUCH_X_MAX, 0, tft.width() - 1);
+  y = map(ry, TOUCH_Y_MIN, TOUCH_Y_MAX, 0, tft.height() - 1);
+  if (TOUCH_INVERT_X) x = tft.width() - 1 - x;
+  if (TOUCH_INVERT_Y) y = tft.height() - 1 - y;
+  x = constrain(x, 0, tft.width() - 1);
+  y = constrain(y, 0, tft.height() - 1);
   return true;
-}
-
-// ---- Écran de calibration ----
-
-static const int CALIB_MARGE = 20; // distance des croix aux bords
-
-static void tft_dessinerCroix(int x, int y, uint16_t couleur) {
-  tft.drawFastHLine(x - 10, y, 21, couleur);
-  tft.drawFastVLine(x, y - 10, 21, couleur);
-  tft.drawCircle(x, y, 5, couleur);
-}
-
-// Attend un appui franc, en fait la moyenne pendant ~300 ms, puis attend qu'on relâche.
-static void tft_lireAppuiCalibration(int &rx, int &ry) {
-  long sx, sy;
-  int n;
-  do {
-    while (!touch.touched()) delay(10);
-    delay(80); // laisse le stylet se poser
-    sx = sy = n = 0;
-    unsigned long debut = millis();
-    while (millis() - debut < 300) {
-      int x, y;
-      if (tft_checkTouch(x, y)) { sx += x; sy += y; n++; }
-    }
-  } while (n < 5);
-  rx = sx / n;
-  ry = sy / n;
-  unsigned long relache = millis();
-  while (millis() - relache < 200) { // relâché depuis 200 ms
-    if (touch.touched()) relache = millis();
-    delay(10);
-  }
-}
-
-bool tft_calibrerTactile() {
-  const int w = tft.width(), h = tft.height(), m = CALIB_MARGE;
-  // Ordre : haut-gauche, haut-droite, bas-droite, bas-gauche
-  const int cx[4] = { m, w - 1 - m, w - 1 - m, m };
-  const int cy[4] = { m, m, h - 1 - m, h - 1 - m };
-  int rx[4], ry[4];
-
-  for (int i = 0; i < 4; i++) {
-    tft.fillScreen(ILI9341_BLACK);
-    tft.setTextSize(2);
-    tft.setTextColor(ILI9341_WHITE);
-    tft.setCursor(40, h / 2 - 20);
-    tft.print("Appuie au centre");
-    tft.setCursor(40, h / 2 + 4);
-    tft.printf("de la croix (%d/4)", i + 1);
-    tft_dessinerCroix(cx[i], cy[i], ILI9341_YELLOW);
-    tft_lireAppuiCalibration(rx[i], ry[i]);
-    Serial.printf("[Calib] point %d (%d,%d) : brut x=%d y=%d\n", i + 1, cx[i], cy[i], rx[i], ry[i]);
-  }
-
-  // Quel axe brut varie quand on va de gauche à droite ?
-  int dxBrutX = abs((rx[1] + rx[2]) - (rx[0] + rx[3]));
-  int dxBrutY = abs((ry[1] + ry[2]) - (ry[0] + ry[3]));
-  bool echange = dxBrutY > dxBrutX;
-  int a[4], b[4];
-  for (int i = 0; i < 4; i++) {
-    a[i] = echange ? ry[i] : rx[i];
-    b[i] = echange ? rx[i] : ry[i];
-  }
-  // Moyenne des deux croix de chaque bord, puis extrapolation jusqu'au bord de l'écran
-  float gauche = (a[0] + a[3]) / 2.0f, droite = (a[1] + a[2]) / 2.0f;
-  float haut = (b[0] + b[1]) / 2.0f, bas = (b[2] + b[3]) / 2.0f;
-  float parPixelX = (droite - gauche) / (w - 1 - 2 * m);
-  float parPixelY = (bas - haut) / (h - 1 - 2 * m);
-
-  bool ok = fabsf(droite - gauche) > 800 && fabsf(bas - haut) > 600;
-  tft.fillScreen(ILI9341_BLACK);
-  tft.setTextSize(2);
-  tft.setCursor(20, h / 2 - 10);
-  if (!ok) {
-    Serial.println(F("[Calib] ECHEC : points trop proches, recommence en appuyant bien sur les croix"));
-    tft.setTextColor(ILI9341_RED);
-    tft.print("Echec, recommence");
-    delay(1500);
-    return false;
-  }
-  calib.xMin = lroundf(gauche - m * parPixelX);
-  calib.xMax = lroundf(droite + m * parPixelX);
-  calib.yMin = lroundf(haut - m * parPixelY);
-  calib.yMax = lroundf(bas + m * parPixelY);
-  calib.echange = echange;
-  tft_enregistrerCalibration();
-  calibre = true;
-  Serial.printf("[Calib] OK : X %d..%d  Y %d..%d  echange=%d (enregistre)\n",
-                calib.xMin, calib.xMax, calib.yMin, calib.yMax, calib.echange);
-  tft.setTextColor(ILI9341_GREEN);
-  tft.print("Calibration OK");
-  delay(1000);
-  return true;
-}
-
-bool tft_estCalibre() {
-  return calibre;
 }
 
 Adafruit_ILI9341 &tft_get() {
