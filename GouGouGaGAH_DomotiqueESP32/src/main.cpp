@@ -45,7 +45,7 @@ void loop() {
     String ligne = String("Lux ") + bh1750_readLux() +
                    "  T " + bmp280_readTemperature() + "C" +
                    "  P " + bmp280_readPressure() + "hPa" +
-                   "  MQ " + mq_readPercent() + "%";
+                   "  MQ " + mq_readRaw();
     Serial.println(ligne);
   }
 }

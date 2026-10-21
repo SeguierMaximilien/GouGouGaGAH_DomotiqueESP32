@@ -131,7 +131,7 @@ static String textePression() {
 }
 
 static String texteGaz() {
-  return String(mq_readPercent(), 1) + " %  (brut " + mq_readRaw() + ")";
+  return String(mq_readRaw()) + " / 4095";
 }
 
 static void rafraichir() {
@@ -150,7 +150,7 @@ static void rafraichir() {
       ecrireValeur(55,  "Lumiere : " + texteLux(), 2, ILI9341_YELLOW);
       ecrireValeur(85,  "Temp.   : " + texteTemperature(), 2, ILI9341_ORANGE);
       ecrireValeur(115, "Pression: " + textePression(), 2, ILI9341_CYAN);
-      ecrireValeur(145, "Gaz     : " + String(mq_readPercent(), 1) + " %", 2, ILI9341_GREEN);
+      ecrireValeur(145, "Gaz     : " + String(mq_readRaw()), 2, ILI9341_GREEN);
       ecrireValeur(175, "Badge   : " + (dernierBadge.length() ? dernierBadge : String("-")), 2, ILI9341_WHITE);
       ecrireValeur(205, String("Relais  : ") + (relais_estActif() ? "ON" : "OFF"), 2, ILI9341_WHITE);
       break;
