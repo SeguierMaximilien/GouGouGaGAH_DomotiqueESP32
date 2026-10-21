@@ -30,7 +30,7 @@
 // ---- Capteur MQ (analogique) ----
 #define MQ_AO       1
 
-// ---- Libre ----
-// GPIO10 : libre (carte SD non utilisee)
+// ---- Commande relais ----
+#define CMD_RELAY   10
 
 #endif // PINOUT_H
