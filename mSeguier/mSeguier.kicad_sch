@@ -7026,7 +7026,7 @@
 				)
 			)
 		)
-		(property "Value" "Finder 30.22.7.005"
+		(property "Value" "Finder 30.22.7.005.0010"
 			(at 250.19 58.42 0)
 			(show_name no)
 			(do_not_autoplace no)
