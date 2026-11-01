@@ -10,6 +10,7 @@
 #include "module_tft.h"
 #include "module_menu.h"
 #include "module_relais.h"
+#include "module_ha.h"
 
 void setup() {
   Serial.begin(115200);
@@ -33,10 +34,12 @@ void setup() {
   relais_setup();
   tft_setup();
   menu_setup(); // menu tactile : un bouton par composant
+  ha_setup();   // WiFi + MQTT vers Home Assistant
 }
 
 void loop() {
   menu_loop();
+  ha_loop();
 
   // Récapitulatif sur le moniteur série toutes les 2 s
   static unsigned long lastPrint = 0;
@@ -45,7 +48,8 @@ void loop() {
     String ligne = String("Lux ") + bh1750_readLux() +
                    "  T " + bmp280_readTemperature() + "C" +
                    "  P " + bmp280_readPressure() + "hPa" +
-                   "  MQ " + mq_readRaw();
+                   "  MQ " + mq_readRaw() +
+                   "  MQTT " + (ha_estConnecte() ? "OK" : "--");
     Serial.println(ligne);
   }
 }

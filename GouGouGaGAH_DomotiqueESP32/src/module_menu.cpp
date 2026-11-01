@@ -5,6 +5,7 @@
 #include "module_mq.h"
 #include "module_rfid.h"
 #include "module_relais.h"
+#include "module_ha.h"
 
 // Pas d'accents à l'écran : la police par défaut d'Adafruit_GFX ne les affiche pas.
 
@@ -154,6 +155,10 @@ static void rafraichir() {
       ecrireValeur(175, "Badge   : " + (dernierBadge.length() ? dernierBadge : String("-")), 2, ILI9341_WHITE);
       ecrireValeur(205, String("Relais  : ") + (relais_estActif() ? "ON" : "OFF"), 2, ILI9341_WHITE);
       break;
+    case RELAIS:
+      // Le relais a pu être basculé depuis Home Assistant : on redessine le bouton
+      if ((strcmp(boutonRelais.texte, "ON") == 0) != relais_estActif()) dessinerEtatRelais();
+      break;
     default:
       break;
   }
@@ -199,6 +204,7 @@ void menu_loop() {
   if (rfid_checkCard(uid)) {
     dernierBadge = uid;
     Serial.println("[RC522] Carte : " + uid);
+    ha_publierBadge(uid);
     if (ecranActuel == BADGE) ecrireValeur(110, uid, 3, ILI9341_YELLOW);
   }
 
