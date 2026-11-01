@@ -1,0 +1,14 @@
+# Ajout à configuration.yaml (facultatif : la même entrée peut être créée
+# dans Paramètres > Appareils et services > Entrées > Créer une entrée > Nombre).
+# Les entités de l'ESP32 n'ont besoin d'aucune ligne ici : elles arrivent
+# par la découverte MQTT (intégration MQTT + broker Mosquitto).
+
+input_number:
+  temperature_souhaitee:
+    name: Température souhaitée
+    min: 15
+    max: 30
+    step: 0.5
+    unit_of_measurement: "°C"
+    mode: slider
+    icon: mdi:thermometer-check
