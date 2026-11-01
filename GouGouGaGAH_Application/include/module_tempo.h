@@ -8,10 +8,11 @@
 
 enum CouleurTempo { TEMPO_INCONNU = 0, TEMPO_BLEU = 1, TEMPO_BLANC = 2, TEMPO_ROUGE = 3 };
 
+// Lance aussi une tâche de fond qui lit les couleurs sur internet toutes les heures
+// (sans jamais bloquer le reste du programme).
 void tempo_setup();
 
-// À appeler à chaque tour de loop() : fait clignoter la LED et
-// met à jour les couleurs toutes les heures (quand le WiFi est là).
+// À appeler à chaque tour de loop() : fait clignoter la LED.
 void tempo_loop();
 
 CouleurTempo tempo_aujourdhui();
