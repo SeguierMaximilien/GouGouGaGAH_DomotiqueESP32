@@ -1,0 +1,28 @@
+Entités créées automatiquement par l'ESP32 (découverte MQTT, appareil « GouGouGaGAH »)
+Noms attendus ; à vérifier dans Paramètres > Appareils et services > MQTT > GouGouGaGAH.
+
+sensor.gougougagah_luminosite          Luminosité BH1750 (lx)
+sensor.gougougagah_temperature         Température BMP280 (°C)
+sensor.gougougagah_pression            Pression BMP280 (hPa)
+sensor.gougougagah_gaz_brut            Capteur de gaz MQ (valeur brute 0..4095)
+sensor.gougougagah_badges_autorises    Nombre de badges RFID enregistrés
+sensor.gougougagah_dernier_badge       UID du dernier badge présenté
+sensor.gougougagah_dernier_acces       Résultat (autorise, refuse, ajoute...)
+sensor.gougougagah_tempo_aujourd_hui   Couleur Tempo EDF du jour (bleu/blanc/rouge)
+sensor.gougougagah_tempo_demain        Couleur Tempo EDF de demain
+binary_sensor.gougougagah_porte        Gâche électrique (relais K1) ouverte / fermée
+button.gougougagah_ouvrir_la_porte     Commande du relais : ouvre la porte 3 s
+number.gougougagah_eclairage           Sortie PWM GPIO2 (0..100 %)
+
+Entrée (helper) créée à la main :
+input_number.temperature_souhaitee     Consigne de température (°C)
+
+Topics MQTT :
+gougougagah/etat          ESP32 -> HA  mesures en JSON toutes les 10 s
+gougougagah/porte         ESP32 -> HA  ON / OFF
+gougougagah/porte/ouvrir  HA -> ESP32  ouvre la porte
+gougougagah/pwm           ESP32 -> HA  0..100
+gougougagah/pwm/set       HA -> ESP32  0..100
+gougougagah/badge         ESP32 -> HA  {"uid":"..","resultat":".."}
+gougougagah/ordre         HA -> ESP32  texte affiché au moniteur série et sur l'écran Infos
+gougougagah/dispo         ESP32 -> HA  online / offline (testament MQTT)

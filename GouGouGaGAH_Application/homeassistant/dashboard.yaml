@@ -1,0 +1,104 @@
+# Tableau de bord AssistDomo
+# Paramètres > Tableaux de bord > Ajouter un tableau de bord > Nouveau tableau de bord vide
+# puis ✏️ > ⋮ > Éditeur de configuration brute : coller ce fichier.
+title: AssistDomo
+views:
+  - title: Maison
+    path: maison
+    icon: mdi:home-automation
+    cards:
+      - type: entities
+        title: Mesures en direct
+        show_header_toggle: false
+        entities:
+          - entity: sensor.gougougagah_temperature
+            name: Température
+          - entity: sensor.gougougagah_luminosite
+            name: Luminosité
+          - entity: sensor.gougougagah_pression
+            name: Pression
+          - entity: sensor.gougougagah_gaz_brut
+            name: Gaz (MQ, brut)
+
+      - type: vertical-stack
+        cards:
+          - type: entity
+            entity: binary_sensor.gougougagah_porte
+            name: Porte (gâche)
+          - type: button
+            entity: button.gougougagah_ouvrir_la_porte
+            name: Ouvrir la porte
+            icon: mdi:door-open
+            show_state: false
+            tap_action:
+              action: perform-action
+              perform_action: button.press
+              target:
+                entity_id: button.gougougagah_ouvrir_la_porte
+
+      - type: entities
+        title: Commandes
+        show_header_toggle: false
+        entities:
+          - entity: number.gougougagah_eclairage
+            name: Éclairage (PWM)
+          - entity: input_number.temperature_souhaitee
+            name: Température souhaitée
+
+      - type: history-graph
+        title: Température (24 h)
+        hours_to_show: 24
+        entities:
+          - entity: sensor.gougougagah_temperature
+            name: Température
+          - entity: input_number.temperature_souhaitee
+            name: Consigne
+
+      - type: history-graph
+        title: Luminosité (24 h)
+        hours_to_show: 24
+        entities:
+          - entity: sensor.gougougagah_luminosite
+            name: Luminosité
+
+      - type: history-graph
+        title: Pression (24 h)
+        hours_to_show: 24
+        entities:
+          - entity: sensor.gougougagah_pression
+            name: Pression
+
+      - type: history-graph
+        title: Gaz MQ (24 h)
+        hours_to_show: 24
+        entities:
+          - entity: sensor.gougougagah_gaz_brut
+            name: Gaz (brut)
+
+      - type: entities
+        title: Contrôle d'accès RFID
+        show_header_toggle: false
+        entities:
+          - entity: sensor.gougougagah_dernier_badge
+            name: Dernier badge
+          - entity: sensor.gougougagah_dernier_acces
+            name: Résultat
+          - entity: sensor.gougougagah_badges_autorises
+            name: Badges enregistrés
+
+      - type: logbook
+        title: Historique porte et badges
+        hours_to_show: 24
+        entities:
+          - binary_sensor.gougougagah_porte
+          - sensor.gougougagah_dernier_badge
+          - sensor.gougougagah_dernier_acces
+
+      - type: entities
+        title: Tempo EDF
+        show_header_toggle: false
+        entities:
+          - entity: sensor.gougougagah_tempo_aujourd_hui
+            name: Aujourd'hui
+          - entity: sensor.gougougagah_tempo_demain
+            name: Demain
