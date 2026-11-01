@@ -220,7 +220,7 @@ def partie_debut():
   <div class="haut">IUT de Toulon, département GEII<br>SAE3.ESE.01-02 Concevoir-Vérifier</div>
   <div class="titre">
     <div class="t1">Dossier de conception</div>
-    <div class="t2">Assistant domotique « GouGouGaGAH »<br>ESP32-C6 et Home Assistant</div>
+    <div class="t2">Assistant domotique « Yuki »<br>ESP32-C6 et Home Assistant</div>
     <div class="t3">Schéma fonctionnel · Schéma structurel · Captures Home Assistant<br>
     Annexes : code Arduino, codes et configuration Home Assistant</div>
   </div>
@@ -232,11 +232,11 @@ def partie_debut():
 <tr><td>1. Schéma fonctionnel</td></tr>
 <tr><td>2. Schéma structurel (KiCad)</td></tr>
 <tr><td>3. Captures d'écran Home Assistant</td></tr>
-<tr><td>Annexe A. Code Arduino du programme final (GouGouGaGAH_Application)</td></tr>
+<tr><td>Annexe A. Code Arduino du programme final</td></tr>
 <tr><td>Annexe B. Codes et configuration Home Assistant</td></tr>
 </table>
 <h2>Présentation du système</h2>
-<p>L'assistant domotique affiche des informations sur l'habitation et permet de la piloter.
+<p>L'assistant domotique <b>Yuki</b> affiche des informations sur l'habitation et permet de la piloter.
 Une carte à base de <b>nanoESP32-C6</b> mesure la lumière (BH1750), la température et la pression (BMP280)
 et la présence de gaz (MQ). Elle lit les badges RFID (RC522) pour commander la gâche de la porte
 par le relais K1, affiche les données sur un écran tactile ILI9341 et fournit une sortie PWM pour
@@ -328,7 +328,7 @@ def partie_ha():
         if CAPTURES.exists() else []
     s = "<h1>3. Captures d'écran Home Assistant</h1>\n"
     s += ("<p>Home Assistant OS est installé sur un Raspberry Pi 3 du réseau local. La carte s'y connecte en WiFi "
-          "par le broker MQTT Mosquitto ; l'appareil <b>GouGouGaGAH</b> et ses entités apparaissent "
+          "par le broker MQTT Mosquitto ; l'appareil de Yuki (nommé <b>GouGouGaGAH</b> dans Home Assistant) et ses entités apparaissent "
           "automatiquement (découverte MQTT).</p>\n")
     if imgs:
         for i, p in enumerate(imgs, 1):
@@ -350,9 +350,9 @@ def partie_annexe_code():
         for p in sorted((APP / d).glob("*")):
             if p.suffix in (".h", ".cpp") and p not in fichiers and p.name != "secrets.h":
                 fichiers.append(p)
-    s = "<h1>Annexe A. Code Arduino (GouGouGaGAH_Application)</h1>\n"
+    s = "<h1>Annexe A. Code Arduino de Yuki</h1>\n"
     s += ("<p>Projet PlatformIO, framework Arduino (plateforme pioarduino), carte <code>esp32-c6-devkitc-1</code>. "
-          "Code source complet du programme final, dépôt GitHub "
+          "Code source complet du programme final. <b>GouGouGaGAH</b> est le nom interne de Yuki dans le code, les noms de dossiers, les topics MQTT et l'appareil Home Assistant. Dépôt GitHub "
           "<code>SeguierMaximilien/GouGouGaGAH_DomotiqueESP32</code>, dossier <code>GouGouGaGAH_Application/</code>. "
           "Le fichier <code>secrets.h</code> (mots de passe WiFi et MQTT) n'est pas publié : "
           "seul son modèle <code>secrets_exemple.h</code> figure ici.</p>\n")
@@ -408,6 +408,8 @@ ENTITES = [
 
 def partie_annexe_ha():
     s = "<h1>Annexe B. Codes et configuration Home Assistant</h1>\n"
+    s += ("<p class=\"note\">Dans Home Assistant, Yuki apparaît sous son nom interne <b>GouGouGaGAH</b> "
+          "(appareil, entités <code>*.gougougagah_*</code>, topics <code>gougougagah/…</code>).</p>\n")
     s += """
 <h2>B.1 Installation et intégration MQTT</h2>
 <table>
