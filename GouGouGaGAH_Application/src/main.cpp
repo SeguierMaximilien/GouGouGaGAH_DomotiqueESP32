@@ -1,3 +1,4 @@
+#include <WiFi.h>
 // ========================================================
 // Assistant domotique GouGouGaGAH - programme final
 // (le programme de test des composants est dans GouGouGaGAH_DomotiqueESP32)
@@ -62,6 +63,7 @@ void loop() {
                    "  P " + bmp280_readPressure() + "hPa" +
                    "  MQ " + mq_readRaw() +
                    "  PWM " + pwm_get() + "%" +
-                   "  MQTT " + (ha_estConnecte() ? "OK" : "--"));
+                   "  MQTT " + (ha_estConnecte() ? "OK" : "--") +
+                   "  WiFi " + (ha_wifiConnecte() ? String(WiFi.RSSI()) + "dBm" : String("--")));
   }
 }

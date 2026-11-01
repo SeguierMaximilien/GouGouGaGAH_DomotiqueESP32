@@ -31,6 +31,7 @@ static const unsigned long PERIODE_RECONNEXION = 10000;
 
 static WiFiClient wifiClient;
 static PubSubClient mqtt(wifiClient);
+static bool mqttAnnonce = false;
 static unsigned long dernierEnvoi = 0;
 static unsigned long derniereTentative = 0;
 static bool wifiAnnonce = false;
@@ -163,6 +164,7 @@ static void connecterMqtt() {
 void ha_setup() {
   WiFi.mode(WIFI_STA);
   WiFi.setAutoReconnect(true);
+  WiFi.setSleep(false); // sans ça le modem s'endort et le Pi coupe la connexion MQTT
   WiFi.begin(WIFI_SSID, WIFI_MOTDEPASSE);
   Serial.printf("[WiFi] Connexion a \"%s\"...\n", WIFI_SSID);
 
@@ -170,6 +172,8 @@ void ha_setup() {
   mqtt.setCallback(recevoir);
   mqtt.setBufferSize(1024); // les messages de découverte dépassent les 256 octets par défaut
   mqtt.setSocketTimeout(3); // évite de figer l'écran trop longtemps si le Pi ne répond pas
+  mqtt.setKeepAlive(30);    // plus tolérant si la boucle prend un peu de retard
+  wifiClient.setConnectionTimeout(1500); // une tentative ratée ne bloque que 1,5 s
 }
 
 void ha_loop() {
@@ -186,6 +190,10 @@ void ha_loop() {
   }
 
   if (!mqtt.connected()) {
+    if (mqttAnnonce) {
+      mqttAnnonce = false;
+      Serial.printf("[HA] MQTT deconnecte (etat %d, WiFi %d dBm)\n", mqtt.state(), WiFi.RSSI());
+    }
     if (derniereTentative == 0 || millis() - derniereTentative > PERIODE_RECONNEXION) {
       derniereTentative = millis();
       connecterMqtt();
@@ -193,6 +201,7 @@ void ha_loop() {
     return;
   }
 
+  mqttAnnonce = true;
   mqtt.loop();
   // Changements faits depuis l'écran ou par un badge : on prévient tout de suite
   if (portePubliee != (acces_porteOuverte() ? 1 : 0)) envoyerPorte();
