@@ -5,7 +5,8 @@
 
 // Contrôle d'accès : badges autorisés (mémorisés en NVS) et gâche de porte (relais).
 
-enum ModeAcces { ACCES_NORMAL, ACCES_AJOUT, ACCES_SUPPRESSION };
+// ACCES_VALIDATION : avant d'ajouter un badge, il faut d'abord passer un badge déjà autorisé.
+enum ModeAcces { ACCES_NORMAL, ACCES_VALIDATION, ACCES_AJOUT, ACCES_SUPPRESSION };
 
 // Charge la liste des badges autorisés depuis la mémoire NVS.
 void acces_setup();
@@ -18,6 +19,7 @@ void acces_ouvrirPorte();
 bool acces_porteOuverte();
 
 // Le prochain badge présenté sera ajouté / supprimé (15 s pour le présenter).
+// Pour l'ajout, il faut d'abord passer un badge déjà autorisé (sauf si la liste est vide).
 void acces_demanderAjout();
 void acces_demanderSuppression();
 void acces_annulerMode();

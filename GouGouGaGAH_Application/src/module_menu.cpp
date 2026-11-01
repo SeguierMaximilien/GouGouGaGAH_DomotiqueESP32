@@ -172,7 +172,8 @@ static void rafraichir() {
       ecrireValeur(55, String("Badges autorises : ") + acces_nbBadges(), 2, ILI9341_WHITE);
       String etat;
       uint16_t couleur = ILI9341_YELLOW;
-      if (acces_mode() == ACCES_AJOUT) etat = "Passe le badge a ajouter";
+      if (acces_mode() == ACCES_VALIDATION) etat = "Passe un badge autorise";
+      else if (acces_mode() == ACCES_AJOUT) etat = "Passe le NOUVEAU badge";
       else if (acces_mode() == ACCES_SUPPRESSION) etat = "Passe le badge a enlever";
       else if (effacerArme && millis() - effacerArme < 3000) {
         etat = "Re-appuie : tout effacer";
