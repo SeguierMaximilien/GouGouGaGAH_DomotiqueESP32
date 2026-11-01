@@ -4,27 +4,21 @@
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 
-// API publique gratuite (données RTE) : renvoie {"codeJour":1,...} avec 1 bleu, 2 blanc, 3 rouge
-#define URL_TEMPO "https://www.api-couleur-tempo.fr/api/jourTempo/"
+// API publique gratuite (données RTE) : renvoie {"codeJour":1,...} avec 1 bleu, 2 blanc, 3 rouge.
+// On essaie d'abord en http (léger, pas de chiffrement), puis en https si le serveur refuse.
+#define URL_TEMPO_HTTP  "http://www.api-couleur-tempo.fr/api/jourTempo/"
+#define URL_TEMPO_HTTPS "https://www.api-couleur-tempo.fr/api/jourTempo/"
 
 static const unsigned long PERIODE_MAJ = 3600000UL;   // 1 h
 static const unsigned long PERIODE_ESSAI = 300000UL;  // 5 min si la dernière requête a échoué
 static const unsigned long CYCLE_LED = 2000;          // ms
 
-static CouleurTempo aujourdhui = TEMPO_INCONNU;
-static CouleurTempo demain = TEMPO_INCONNU;
-static unsigned long derniereMaj = 0;
-static bool dejaMaj = false;
+// Écrites par la tâche de fond, lues par loop()
+static volatile CouleurTempo aujourdhui = TEMPO_INCONNU;
+static volatile CouleurTempo demain = TEMPO_INCONNU;
 static int phaseAffichee = -1;
 
-// Lit /today ou /tomorrow ; TEMPO_INCONNU si la requête échoue
-static CouleurTempo lireJour(const char *jour) {
-  WiFiClientSecure client;
-  client.setInsecure(); // pas de vérification du certificat : suffisant pour une couleur Tempo
-  HTTPClient http;
-  http.setTimeout(4000);
-  if (!http.begin(client, String(URL_TEMPO) + jour)) return TEMPO_INCONNU;
-
+static CouleurTempo lireReponse(HTTPClient &http) {
   CouleurTempo c = TEMPO_INCONNU;
   if (http.GET() == HTTP_CODE_OK) {
     String json = http.getString();
@@ -38,10 +32,37 @@ static CouleurTempo lireJour(const char *jour) {
   return c;
 }
 
-static void mettreAJour() {
-  aujourdhui = lireJour("today");
-  demain = lireJour("tomorrow");
-  Serial.printf("[Tempo] aujourd'hui %s, demain %s\n", tempo_nom(aujourdhui), tempo_nom(demain));
+// Lit /today ou /tomorrow ; TEMPO_INCONNU si la requête échoue
+static CouleurTempo lireJour(const char *jour) {
+  WiFiClient client;
+  HTTPClient http;
+  http.setConnectTimeout(5000);
+  http.setTimeout(5000);
+  CouleurTempo c = TEMPO_INCONNU;
+  if (http.begin(client, String(URL_TEMPO_HTTP) + jour)) c = lireReponse(http);
+  if (c != TEMPO_INCONNU) return c;
+
+  WiFiClientSecure clientSecure;
+  clientSecure.setInsecure(); // pas de vérification du certificat : suffisant pour une couleur Tempo
+  clientSecure.setHandshakeTimeout(10);
+  if (http.begin(clientSecure, String(URL_TEMPO_HTTPS) + jour)) c = lireReponse(http);
+  return c;
+}
+
+// Tâche de fond : les requêtes internet peuvent durer plusieurs secondes,
+// elles ne doivent jamais bloquer l'écran, les badges ni Home Assistant.
+static void tacheTempo(void *) {
+  for (;;) {
+    if (WiFi.status() != WL_CONNECTED) {
+      vTaskDelay(pdMS_TO_TICKS(2000));
+      continue;
+    }
+    aujourdhui = lireJour("today");
+    demain = lireJour("tomorrow");
+    Serial.printf("[Tempo] aujourd'hui %s, demain %s\n", tempo_nom(aujourdhui), tempo_nom(demain));
+    unsigned long attente = aujourdhui != TEMPO_INCONNU ? PERIODE_MAJ : PERIODE_ESSAI;
+    vTaskDelay(pdMS_TO_TICKS(attente));
+  }
 }
 
 static void allumer(CouleurTempo c) {
@@ -66,20 +87,12 @@ static void clignoter() {
 
 void tempo_setup() {
   rgbLedWrite(LED_RGB, 0, 0, 0);
+  xTaskCreate(tacheTempo, "tempo", 10240, nullptr, 1, nullptr);
   Serial.println(F("[Tempo] LED RGB prete"));
 }
 
 void tempo_loop() {
   clignoter();
-  if (WiFi.status() != WL_CONNECTED) return;
-
-  bool connu = aujourdhui != TEMPO_INCONNU;
-  unsigned long attente = connu ? PERIODE_MAJ : PERIODE_ESSAI;
-  if (!dejaMaj || millis() - derniereMaj > attente) {
-    dejaMaj = true;
-    derniereMaj = millis();
-    mettreAJour();
-  }
 }
 
 CouleurTempo tempo_aujourdhui() {
