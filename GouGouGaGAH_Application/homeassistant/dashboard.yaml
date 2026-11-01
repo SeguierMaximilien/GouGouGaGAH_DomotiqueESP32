@@ -46,8 +46,8 @@ views:
             name: Température souhaitée
 
       - type: history-graph
-        title: Température (24 h)
-        hours_to_show: 24
+        title: Température (2 h)
+        hours_to_show: 2
         entities:
           - entity: sensor.gougougagah_temperature
             name: Température
@@ -55,22 +55,22 @@ views:
             name: Consigne
 
       - type: history-graph
-        title: Luminosité (24 h)
-        hours_to_show: 24
+        title: Luminosité (2 h)
+        hours_to_show: 2
         entities:
           - entity: sensor.gougougagah_luminosite
             name: Luminosité
 
       - type: history-graph
-        title: Pression (24 h)
-        hours_to_show: 24
+        title: Pression (2 h)
+        hours_to_show: 2
         entities:
           - entity: sensor.gougougagah_pression
             name: Pression
 
       - type: history-graph
-        title: Gaz MQ (24 h)
-        hours_to_show: 24
+        title: Gaz MQ (2 h)
+        hours_to_show: 2
         entities:
           - entity: sensor.gougougagah_gaz_brut
             name: Gaz (brut)
