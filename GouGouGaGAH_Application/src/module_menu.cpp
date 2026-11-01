@@ -11,7 +11,7 @@
 
 // Pas d'accents à l'écran : la police par défaut d'Adafruit_GFX ne les affiche pas.
 
-enum Ecran { MENU, CAPTEURS, PORTE, BADGES, ECLAIRAGE, INFOS };
+enum Ecran { MENU, CAPTEURS, PORTE, BADGES, ECLAIRAGE, INFOS, CALIBRER };
 
 struct Bouton {
   int x, y, w, h;
@@ -19,9 +19,9 @@ struct Bouton {
   uint16_t couleur;
 };
 
-static const int NB_BOUTONS = 5;
+static const int NB_BOUTONS = 6;
 static Bouton boutons[NB_BOUTONS];
-static const Ecran cibles[NB_BOUTONS] = { CAPTEURS, PORTE, BADGES, ECLAIRAGE, INFOS };
+static const Ecran cibles[NB_BOUTONS] = { CAPTEURS, PORTE, BADGES, ECLAIRAGE, INFOS, CALIBRER };
 static Bouton retour;
 static Bouton btnOuvrir;                               // écran Porte
 static Bouton btnAjouter, btnSupprimer, btnEffacer;    // écran Badges
@@ -30,6 +30,7 @@ static Bouton btnMoins, btnPlus;                       // écran Eclairage
 static Ecran ecranActuel = MENU;
 static unsigned long dernierRafraichissement = 0;
 static bool doigtPose = false;          // pour ne réagir qu'au moment où on pose le doigt
+static unsigned long dernierContact = 0; // anti-rebond : relâché seulement après 150 ms sans contact
 static unsigned long effacerArme = 0;   // "Tout effacer" demande un 2e appui dans les 3 s
 
 // ---------------------------------------------------------------- dessin ----
@@ -117,6 +118,11 @@ static void afficherEcran(Ecran e) {
       break;
     case INFOS:
       dessinerTitre("Infos");
+      break;
+    case CALIBRER:
+      tft_calibrerTactile();
+      doigtPose = true; // le stylet vient d'être levé : pas de clic fantôme
+      afficherEcran(MENU);
       break;
   }
 }
@@ -246,9 +252,9 @@ void menu_setup() {
   // Menu : grille de 3 x 2 boutons
   int w = (W - 4 * marge) / 3;
   int h = (tft.height() - haut - 3 * marge) / 2;
-  const char *textes[NB_BOUTONS] = { "Capteurs", "Porte", "Badges", "Eclair.", "Infos" };
+  const char *textes[NB_BOUTONS] = { "Capteurs", "Porte", "Badges", "Eclair.", "Infos", "Calib." };
   uint16_t couleurs[NB_BOUTONS] = { ILI9341_DARKGREEN, ILI9341_ORANGE, ILI9341_PURPLE,
-                                    ILI9341_OLIVE, ILI9341_NAVY };
+                                    ILI9341_OLIVE, ILI9341_NAVY, ILI9341_DARKGREY };
   for (int i = 0; i < NB_BOUTONS; i++) {
     int col = i % 3, ligne = i / 3;
     boutons[i] = { marge + col * (w + marge), haut + marge + ligne * (h + marge), w, h,
@@ -264,6 +270,10 @@ void menu_setup() {
   btnMoins     = { 20,          55, 80, 50, "-10", ILI9341_DARKGREY };
   btnPlus      = { W - 100,     55, 80, 50, "+10", ILI9341_DARKGREY };
 
+  // Sans calibration, les boutons ne tombent pas sous le stylet : on calibre d'abord
+  if (!tft_estCalibre()) {
+    while (!tft_calibrerTactile()) {}
+  }
   afficherEcran(MENU);
 }
 
@@ -271,7 +281,12 @@ void menu_loop() {
   int x, y;
   bool touche = tft_checkTouchPixel(x, y);
   if (touche && !doigtPose) toucher(x, y);
-  doigtPose = touche;
+  if (touche) {
+    doigtPose = true;
+    dernierContact = millis();
+  } else if (millis() - dernierContact > 150) {
+    doigtPose = false;
+  }
 
   if (ecranActuel != MENU && millis() - dernierRafraichissement > 500) {
     dernierRafraichissement = millis();
