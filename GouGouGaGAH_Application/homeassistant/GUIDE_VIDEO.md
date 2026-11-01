@@ -15,10 +15,11 @@ Durée visée : 3 à 4 minutes. Un téléphone en 1080p fait environ 100 Mo pour
    - Min 15, Max 30, Pas 0,5, unité `°C`, affichage curseur
 
    L'entité doit s'appeler `input_number.temperature_souhaitee`.
-4. **Automatisations** : Paramètres → Automatisations et scènes → Créer une automatisation → Créer une nouvelle automatisation.
-   - Ouvre ⋮ en haut à droite → **Modifier en YAML**.
-   - Colle **un seul bloc** de `automations.yaml`, sans le tiret `- ` du début et en enlevant 2 espaces d'indentation.
-   - Enregistre, puis recommence pour chacun des 5 blocs.
+4. **Automatisations** : pas besoin d'envoyer de fichier au Pi, tout se fait par **copier-coller** depuis le navigateur du PC.
+   - Ouvre les fichiers de `homeassistant/a_coller/` dans VS Code (un fichier = une automatisation).
+   - Dans HA : Paramètres → Automatisations et scènes → Créer une automatisation → Créer une nouvelle automatisation.
+   - Ouvre ⋮ en haut à droite → **Modifier en YAML**, efface tout, puis colle le contenu d'un fichier (Ctrl+A, Ctrl+C dans VS Code ; Ctrl+V dans HA).
+   - Clique sur **Enregistrer**, puis recommence pour les 5 fichiers.
 5. **Tableau de bord** : Paramètres → Tableaux de bord → Ajouter → Nouveau tableau de bord vide, nommé « AssistDomo ».
    - Ouvre-le, puis ✏️ (modifier) → ⋮ → **Éditeur de configuration brute**.
    - Colle tout `dashboard.yaml`, puis Enregistrer.

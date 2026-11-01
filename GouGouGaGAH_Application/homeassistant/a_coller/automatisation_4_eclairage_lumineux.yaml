@@ -1,0 +1,16 @@
+alias: AssistDomo - Extinction si lumineux
+triggers:
+- trigger: numeric_state
+  entity_id: sensor.gougougagah_luminosite
+  above: 100
+actions:
+- action: number.set_value
+  target:
+    entity_id: number.gougougagah_eclairage
+  data:
+    value: 0
+- action: mqtt.publish
+  data:
+    topic: gougougagah/ordre
+    payload: 'ECLAIRAGE : eteint ({{ states(''sensor.gougougagah_luminosite'') }} lx)'
+mode: single
