@@ -24,6 +24,7 @@
 #define TOPIC_PWM        BASE "/pwm"            // 0..100 %
 #define TOPIC_PWM_CMD    BASE "/pwm/set"
 #define TOPIC_BADGE      BASE "/badge"          // {"uid":...,"resultat":...}
+#define TOPIC_ORDRE      BASE "/ordre"          // texte libre envoyé par les automatisations HA
 #define TOPIC_HA_STATUS  "homeassistant/status" // Home Assistant vient de (re)démarrer
 
 static const unsigned long PERIODE_MESURES = 10000; // ms entre deux envois
@@ -37,6 +38,7 @@ static unsigned long derniereTentative = 0;
 static bool wifiAnnonce = false;
 static int portePubliee = -1; // -1 = jamais envoyé
 static int pwmPublie = -1;
+static String dernierOrdre = "";
 
 // ------------------------------------------------------ découverte HA ----
 
@@ -130,6 +132,9 @@ static void recevoir(char *topic, byte *payload, unsigned int len) {
   } else if (strcmp(topic, TOPIC_PWM_CMD) == 0) {
     Serial.println("[HA] Eclairage : " + msg + " %");
     pwm_set(msg.toInt());
+  } else if (strcmp(topic, TOPIC_ORDRE) == 0) {
+    dernierOrdre = msg;
+    Serial.println("[HA] >>> ORDRE RECU : " + msg);
   } else if (strcmp(topic, TOPIC_HA_STATUS) == 0 && msg == "online") {
     annoncerTout(); // Home Assistant a redémarré : on se présente de nouveau
   }
@@ -152,6 +157,7 @@ static void connecterMqtt() {
   annoncerTout();
   mqtt.subscribe(TOPIC_PORTE_CMD);
   mqtt.subscribe(TOPIC_PWM_CMD);
+  mqtt.subscribe(TOPIC_ORDRE);
   mqtt.subscribe(TOPIC_HA_STATUS);
   envoyerPorte();
   envoyerPwm();
@@ -224,4 +230,8 @@ bool ha_wifiConnecte() {
 
 bool ha_estConnecte() {
   return mqtt.connected();
+}
+
+String ha_dernierOrdre() {
+  return dernierOrdre;
 }

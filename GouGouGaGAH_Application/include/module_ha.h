@@ -20,4 +20,7 @@ void ha_publierBadge(const String &uid, const String &resultat);
 bool ha_wifiConnecte();
 bool ha_estConnecte(); // connecté au broker MQTT
 
+// Dernier ordre texte reçu sur gougougagah/ordre (automatisations Home Assistant)
+String ha_dernierOrdre();
+
 #endif // MODULE_HA_H

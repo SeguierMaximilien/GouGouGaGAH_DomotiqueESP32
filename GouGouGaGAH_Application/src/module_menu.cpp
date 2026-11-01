@@ -198,6 +198,8 @@ static void rafraichir() {
                    couleurTempo(tempo_aujourdhui()));
       ecrireValeur(150, String("Tempo demain: ") + tempo_nom(tempo_demain()), 2,
                    couleurTempo(tempo_demain()));
+      ecrireValeur(190, ha_dernierOrdre().length() ? "Ordre : " + ha_dernierOrdre() : String("Ordre : aucun"),
+                   1, ILI9341_CYAN);
       break;
     default:
       break;

@@ -1,0 +1,119 @@
+# Automatisations AssistDomo (Paramètres > Automatisations et scènes)
+# Chacune peut être collée dans : Créer une automatisation > ⋮ > Modifier en YAML.
+
+# 1. Badge RFID présenté -> prévenir l'utilisateur
+- id: assistdomo_badge
+  alias: "AssistDomo - Badge RFID detecte"
+  description: "Notification à chaque badge présenté au lecteur RC522"
+  triggers:
+    - trigger: mqtt
+      topic: gougougagah/badge
+  actions:
+    - action: persistent_notification.create
+      data:
+        title: "Badge RFID"
+        message: >-
+          Badge {{ trigger.payload_json.uid }} :
+          {{ trigger.payload_json.resultat }}
+          ({{ now().strftime('%H:%M:%S') }})
+    - action: mqtt.publish
+      data:
+        topic: gougougagah/ordre
+        payload: "NOTIF : badge {{ trigger.payload_json.uid }} {{ trigger.payload_json.resultat }}"
+  mode: queued
+
+# 2. Pergola bioclimatique / volets : température mesurée vs consigne, selon la saison
+- id: assistdomo_pergola
+  alias: "AssistDomo - Pergola et volets selon temperature"
+  description: "Compare la température du BMP280 à la consigne et envoie l'ordre à l'ESP32"
+  triggers:
+    - trigger: numeric_state
+      entity_id: sensor.gougougagah_temperature
+      above: input_number.temperature_souhaitee
+    - trigger: numeric_state
+      entity_id: sensor.gougougagah_temperature
+      below: input_number.temperature_souhaitee
+    - trigger: state
+      entity_id: input_number.temperature_souhaitee
+  variables:
+    t: "{{ states('sensor.gougougagah_temperature') | float(0) }}"
+    consigne: "{{ states('input_number.temperature_souhaitee') | float(20) }}"
+    saison: >-
+      {% set m = now().month %}
+      {{ 'ete' if m in [6,7,8] else 'hiver' if m in [12,1,2]
+         else 'printemps' if m in [3,4,5] else 'automne' }}
+  actions:
+    - choose:
+        - conditions: "{{ t > consigne }}"
+          sequence:
+            - action: mqtt.publish
+              data:
+                topic: gougougagah/ordre
+                payload: >-
+                  {{ 'PERGOLA : lames fermees + VOLETS baisses'
+                     if saison == 'ete' else 'PERGOLA : lames fermees' }}
+                  ({{ saison }}, T={{ t }} > {{ consigne }})
+      default:
+        - action: mqtt.publish
+          data:
+            topic: gougougagah/ordre
+            payload: >-
+              {{ 'PERGOLA : lames ouvertes + VOLETS ouverts'
+                 if saison in ['hiver','automne'] else 'PERGOLA : lames ouvertes' }}
+              ({{ saison }}, T={{ t }} <= {{ consigne }})
+  mode: restart
+
+# 3. Éclairage automatique selon la luminosité (sortie PWM)
+- id: assistdomo_eclairage_nuit
+  alias: "AssistDomo - Eclairage si sombre"
+  triggers:
+    - trigger: numeric_state
+      entity_id: sensor.gougougagah_luminosite
+      below: 30
+  actions:
+    - action: number.set_value
+      target:
+        entity_id: number.gougougagah_eclairage
+      data:
+        value: 80
+    - action: mqtt.publish
+      data:
+        topic: gougougagah/ordre
+        payload: "ECLAIRAGE : allume a 80 % ({{ states('sensor.gougougagah_luminosite') }} lx)"
+  mode: single
+
+- id: assistdomo_eclairage_jour
+  alias: "AssistDomo - Extinction si lumineux"
+  triggers:
+    - trigger: numeric_state
+      entity_id: sensor.gougougagah_luminosite
+      above: 100
+  actions:
+    - action: number.set_value
+      target:
+        entity_id: number.gougougagah_eclairage
+      data:
+        value: 0
+    - action: mqtt.publish
+      data:
+        topic: gougougagah/ordre
+        payload: "ECLAIRAGE : eteint ({{ states('sensor.gougougagah_luminosite') }} lx)"
+  mode: single
+
+# 4. Jour Tempo rouge demain -> prévenir la veille
+- id: assistdomo_tempo_rouge
+  alias: "AssistDomo - Alerte Tempo rouge demain"
+  triggers:
+    - trigger: state
+      entity_id: sensor.gougougagah_tempo_demain
+      to: "rouge"
+  actions:
+    - action: persistent_notification.create
+      data:
+        title: "Tempo EDF"
+        message: "Demain est un jour ROUGE : limiter le chauffage et les gros appareils."
+    - action: mqtt.publish
+      data:
+        topic: gougougagah/ordre
+        payload: "TEMPO : demain rouge, delestage prevu"
+  mode: single
