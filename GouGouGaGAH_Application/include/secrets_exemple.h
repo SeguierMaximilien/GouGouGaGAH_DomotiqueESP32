@@ -11,8 +11,8 @@
 #define WIFI_MOTDEPASSE "MotDePasseWifi"
 
 // ---- Broker MQTT = le Raspberry Pi qui fait tourner Home Assistant ----
-// Mets l'adresse IP affichée sur l'écran du Pi (ex : 192.168.1.18).
-#define MQTT_SERVEUR    "192.168.1.18"
+// Mets l'adresse IP affichée sur l'écran du Pi (ex : 192.168.1.110).
+#define MQTT_SERVEUR    "192.168.1.110"
 #define MQTT_PORT       1883
 // Le compte "esp32" créé dans Home Assistant (Paramètres > Personnes)
 #define MQTT_UTILISATEUR "esp32"
