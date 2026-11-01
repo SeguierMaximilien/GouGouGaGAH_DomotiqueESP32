@@ -1,0 +1,16 @@
+alias: AssistDomo - Eclairage si sombre
+triggers:
+- trigger: numeric_state
+  entity_id: sensor.gougougagah_luminosite
+  below: 30
+actions:
+- action: number.set_value
+  target:
+    entity_id: number.gougougagah_eclairage
+  data:
+    value: 80
+- action: mqtt.publish
+  data:
+    topic: gougougagah/ordre
+    payload: 'ECLAIRAGE : allume a 80 % ({{ states(''sensor.gougougagah_luminosite'') }} lx)'
+mode: single

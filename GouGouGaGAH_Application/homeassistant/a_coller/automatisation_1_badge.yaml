@@ -1,0 +1,15 @@
+alias: AssistDomo - Badge RFID detecte
+description: Notification à chaque badge présenté au lecteur RC522
+triggers:
+- trigger: mqtt
+  topic: gougougagah/badge
+actions:
+- action: persistent_notification.create
+  data:
+    title: Badge RFID
+    message: 'Badge {{ trigger.payload_json.uid }} : {{ trigger.payload_json.resultat }} ({{ now().strftime(''%H:%M:%S'') }})'
+- action: mqtt.publish
+  data:
+    topic: gougougagah/ordre
+    payload: 'NOTIF : badge {{ trigger.payload_json.uid }} {{ trigger.payload_json.resultat }}'
+mode: queued

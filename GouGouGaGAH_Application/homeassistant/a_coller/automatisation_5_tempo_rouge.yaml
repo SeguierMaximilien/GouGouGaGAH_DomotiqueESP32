@@ -1,0 +1,15 @@
+alias: AssistDomo - Alerte Tempo rouge demain
+triggers:
+- trigger: state
+  entity_id: sensor.gougougagah_tempo_demain
+  to: rouge
+actions:
+- action: persistent_notification.create
+  data:
+    title: Tempo EDF
+    message: 'Demain est un jour ROUGE : limiter le chauffage et les gros appareils.'
+- action: mqtt.publish
+  data:
+    topic: gougougagah/ordre
+    payload: 'TEMPO : demain rouge, delestage prevu'
+mode: single
