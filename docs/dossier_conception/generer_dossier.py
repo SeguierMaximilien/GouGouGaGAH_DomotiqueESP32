@@ -120,7 +120,7 @@ def schema_fonctionnel_svg():
                    "Raspberry Pi 3 (HA OS), broker MQTT Mosquitto : tableau de bord, historique, automatisations",
                    "", True))
     e.append(boite(880, 185, 230, 85, "Internet / box",
-                   "API Tempo EDF (couleur du jour)<br>Accès distant au tableau de bord par VPN", "", True))
+                   "API Tempo EDF (couleur du jour)<br>Accès distant au tableau de bord par VPN Tailscale", "", True))
     e.append(boite(880, 470, 230, 62, "Porte", "Gâche électrique (contact NO/COM/NC)", "", True))
     e.append(boite(880, 560, 230, 70, "Éclairage / VMC", "Gradateur ou variateur commandé en PWM", "", True))
     # Fonctions de la carte (= cadres pointillés du schéma structurel)
@@ -244,7 +244,7 @@ la gradation d'un éclairage ou la vitesse d'une VMC. La LED RGB de la carte ind
 et du lendemain et clignote pour attester que le programme tourne.</p>
 <p>La carte communique en WiFi avec <b>Home Assistant</b> (Raspberry Pi 3) par le protocole MQTT :
 les entités sont créées automatiquement par la découverte MQTT, avec historique, tableau de bord
-et automatisations. Le tableau de bord est accessible sur le réseau local et à distance par VPN.</p>
+et automatisations. Le tableau de bord est accessible sur le réseau local et à distance par le VPN Tailscale, sans ouverture de port sur la box.</p>
 """
 
 
@@ -421,7 +421,7 @@ interface web <code>http://192.168.1.110:8123</code></td></tr>
 utilisé par la carte pour se connecter au broker</td></tr>
 <tr><td>Intégration</td><td><b>MQTT</b> (Paramètres → Appareils et services), découverte activée,
 préfixe <code>homeassistant</code></td></tr>
-<tr><td>Accès distant</td><td>Par VPN vers le réseau local de l'habitation</td></tr>
+<tr><td>Accès distant</td><td>VPN <b>Tailscale</b> installé comme application Home Assistant sur le Pi : aucun port ouvert sur la box ; le tableau de bord est joint depuis un smartphone (réseau mobile) à l'adresse Tailscale du Pi, port 8123. Testé et fonctionnel.</td></tr>
 </table>
 <h2>B.2 Messages MQTT échangés</h2>
 <table>
