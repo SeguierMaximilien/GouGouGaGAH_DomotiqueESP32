@@ -68,6 +68,16 @@ static void traiterBadge(const String &uid) {
         signaler(uid, "refuse");
       }
       break;
+    case ACCES_VALIDATION:
+      if (pos >= 0) {
+        signaler(uid, "valide, passe le nouveau badge");
+        mode = ACCES_AJOUT;
+        debutMode = millis(); // 15 s de plus pour le nouveau badge
+      } else {
+        signaler(uid, "refuse, ajout annule");
+        mode = ACCES_NORMAL;
+      }
+      break;
     case ACCES_AJOUT:
       if (pos >= 0) signaler(uid, "deja connu");
       else if (nbBadges >= MAX_BADGES) signaler(uid, "liste pleine");
@@ -123,7 +133,8 @@ bool acces_porteOuverte() {
 }
 
 void acces_demanderAjout() {
-  mode = ACCES_AJOUT;
+  // Liste vide : personne ne peut valider, le premier badge s'enregistre directement
+  mode = nbBadges == 0 ? ACCES_AJOUT : ACCES_VALIDATION;
   debutMode = millis();
 }
 
