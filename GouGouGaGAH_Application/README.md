@@ -6,8 +6,10 @@ Ce dossier-ci contient le **programme final** (projet PlatformIO séparé).
 ## Avant de flasher
 
 1. Copie `include/secrets_exemple.h` en `include/secrets.h` (même dossier).
-2. Remplis `secrets.h` : WiFi de la maison (2,4 GHz), adresse IP du Raspberry Pi,
+2. Remplis `secrets.h` : WiFi (2,4 GHz, le même que le Raspberry Pi)
    et le compte `esp32` créé dans Home Assistant. Ce fichier n'est jamais envoyé sur GitHub.
+   L'adresse IP du Pi est dans `include/config_reseau.h` (actuellement `10.252.23.42`,
+   l'ancienne `192.168.1.110` est gardée en commentaire).
 3. Dans VS Code, ouvre **ce dossier** dans PlatformIO, puis Build et Upload.
 
 ## Ce que fait le programme

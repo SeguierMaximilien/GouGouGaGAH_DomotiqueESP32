@@ -14,6 +14,8 @@
 #warning "include/secrets.h manquant : copie secrets_exemple.h en secrets.h et remplis-le"
 #include "secrets_exemple.h"
 #endif
+// Adresse du Pi : prise dans config_reseau.h (remplace celle de secrets.h)
+#include "config_reseau.h"
 
 // Tous les messages de la carte commencent par ce préfixe
 #define BASE             "gougougagah"
