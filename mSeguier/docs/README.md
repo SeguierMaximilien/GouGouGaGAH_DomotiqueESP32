@@ -23,8 +23,9 @@ Pistes uniquement horizontales, verticales ou à 45°, sans angle droit (coins c
 
 ## Plans de masse
 - GND sur les deux faces, toute la carte, isolation 0,8 mm, connexion en frein thermique.
+- Pas de piste GND (choix du 2026-11-18) : toutes les pastilles GND sont reliées par les plans de masse des deux faces (DRC : 0 non routé).
 - Zone d'exclusion « Exclusion 230V » sur les contacts du relais et le bornier (pas de plan de masse).
-- Exception : pastille 17 de U1, pastille 2 de U3 et pastille 2 de U6 en connexion pleine, les rayons thermiques y
+- Exception : pastilles 17 et 30 de U1, pastille 2 de U2, pastille 2 de U3 et pastille 2 de U6 en connexion pleine, les rayons thermiques y
   étant bloqués par les pistes voisines (sinon erreur DRC « frein thermique incomplet »). 
 
 ## Composants
