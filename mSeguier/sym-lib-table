@@ -1,4 +1,5 @@
 (sym_lib_table
   (version 7)
   (lib (name "GouGouGaGAH")(type "KiCad")(uri "${KIPRJMOD}/lib/GouGouGaGAH.kicad_sym")(options "")(descr "Symboles des modules du projet"))
+  (lib (name "ESP32-C6DevKitGEII")(type "KiCad")(uri "${KIPRJMOD}/lib/ESP32-C6DevKitGEII.kicad_sym")(options "")(descr "Symbole ESP32-C6 DevKit fourni par l'IUT"))
 )
