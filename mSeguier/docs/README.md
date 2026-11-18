@@ -6,7 +6,7 @@ Projet KiCad organisé selon les consignes de routage : `docs/`, `fab/`, `lib/`,
 ## Carte
 - 170 × 90 mm (maxi autorisé), coins arrondis R5, cotes sur Dwgs.User.
 - Trous M3 (`MountingHole:MountingHole_3.2mm_M3`) en haut à gauche et en bas à droite, centres à 5 mm des bords, verrouillés.
-- Placement : écran et RC522 en haut ; nanoESP32-C6 en bas à gauche, USB-C au bord gauche ;
+- Placement : écran et RC522 en haut ; carte ESP32-C6 (MuseLab nanoESP32-C6) en bas à gauche, ses USB-C dépassant de 1 mm du bord gauche ;
   BH1750 sans rien au-dessus ; BMP280 en haut à droite, loin du MQ (chauffe) et du relais ;
   pont R1/R2 sous le MQ ; relais, diode et MOSFET ensemble ; bornier J1 au bord droit, fils vers l'extérieur.
 
@@ -24,16 +24,19 @@ Pistes uniquement horizontales, verticales ou à 45°.
 ## Plans de masse
 - GND sur les deux faces, toute la carte, isolation 0,8 mm, connexion en frein thermique.
 - Zone d'exclusion « Exclusion 230V » sur les contacts du relais et le bornier (pas de plan de masse).
-- Exception : pastilles 2 et 30 de U1 et pastille 2 de U3 en connexion pleine, les rayons thermiques y
+- Exception : pastilles 2 et 30 de U1, pastille 2 de U3 et pastille 2 de U6 en connexion pleine, les rayons thermiques y
   étant bloqués par les pistes voisines (sinon erreur DRC « frein thermique incomplet »). Ces deux
   pastilles sont aussi reliées par une piste GND.
 
 ## Composants
 Pas de condensateurs : C1, C2 et C3 ont été retirés à la demande (les modules ont déjà les leurs).
 
+## Historique
+- 2026-11-18 : ESP32-C6 (U1) décalé de 2,5 mm vers la gauche pour que les USB-C dépassent du bord, pistes re-routées (Freerouting 2.5, pistes à 45°), contacts du relais inchangés.
+
 ## Vérifications faites
 - ERC : 0 erreur, 0 avertissement.
-- DRC (KiCad 10.0.7, zones re-remplies, parité schéma) : 0 erreur, 0 avertissement, 0 non routé.
+- DRC (KiCad 10.0.8, zones re-remplies, parité schéma) : 0 erreur, 0 avertissement, 0 non routé.
 
 ## Ce qu'il te reste à faire
 - Vérifier que le nom du projet (`mSeguier`) est bien le tien.
