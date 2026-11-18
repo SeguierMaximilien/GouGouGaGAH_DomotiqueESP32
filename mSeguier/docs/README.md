@@ -19,7 +19,7 @@ Projet KiCad organisé selon les consignes de routage : `docs/`, `fab/`, `lib/`,
 | Default | 0,25 mm | 0,5 mm | 1,1 / 0,6 | tous les autres signaux, +3V3 |
 
 Tailles prédéfinies : pistes 0,4 / 0,5 / 1,2 mm ; vias 1,6/0,6 et 1,8/0,6.
-Pistes uniquement horizontales, verticales ou à 45°.
+Pistes uniquement horizontales, verticales ou à 45°, sans angle droit (coins cassés à 45°) et sans changement de largeur en cours de piste.
 
 ## Plans de masse
 - GND sur les deux faces, toute la carte, isolation 0,8 mm, connexion en frein thermique.
@@ -36,7 +36,8 @@ Pas de condensateurs : C1, C2 et C3 ont été retirés à la demande (les module
 
 ## Vérifications faites
 - ERC : 0 erreur, 0 avertissement.
-- DRC (KiCad 10.0.8, zones re-remplies, parité schéma) : 0 erreur, 0 non routé. 4 avertissements « sérigraphie coupée par le bord » : normaux, c'est le contour de la DevKit et de ses USB qui dépassent volontairement du bord.
+- DRC (KiCad 10.0.8, zones re-remplies, parité schéma) : 0 erreur, 0 avertissement, 0 non routé.
+- Empreinte de la DevKit : la partie du contour sérigraphié qui dépasse du bord (côté USB) est passée sur F.Fab, sinon avertissement « sérigraphie coupée par le bord ».
 
 ## Ce qu'il te reste à faire
 - Vérifier que le nom du projet (`mSeguier`) est bien le tien.
