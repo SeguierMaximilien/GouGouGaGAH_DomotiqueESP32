@@ -4357,6 +4357,10 @@
 		(at 242.57 179.07)
 		(uuid "64b07156-013e-4957-be72-8c6f2925638a")
 	)
+	(no_connect
+		(at 191.77 184.15)
+		(uuid "22ebdac0-8f5f-4099-8033-425f40c0f3b8")
+	)
 	(wire
 		(pts
 			(xy 83.82 72.39) (xy 76.2 72.39)
@@ -4786,16 +4790,6 @@
 			(type default)
 		)
 		(uuid "907d6f5c-7b74-56d7-924f-73f9c3b49015")
-	)
-	(wire
-		(pts
-			(xy 191.77 184.15) (xy 189.23 184.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "914324fd-3449-57ad-b949-3b548fcc8a68")
 	)
 	(wire
 		(pts
@@ -5716,84 +5710,6 @@
 			(project "mSeguier"
 				(path "/38d7f9fb-f311-5526-9897-64ead4502f63"
 					(reference "U4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+5V")
-		(at 189.23 184.15 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "0b2966a5-1f7f-5aa5-8a17-e6d497854c42")
-		(property "Reference" "#PWR4"
-			(at 193.04 184.15 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+5V"
-			(at 185.42 184.15 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 189.23 184.15 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 189.23 184.15 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 189.23 184.15 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "4f198b9e-2790-5b60-89f1-311736097cbc")
-		)
-		(instances
-			(project "mSeguier"
-				(path "/38d7f9fb-f311-5526-9897-64ead4502f63"
-					(reference "#PWR4")
 					(unit 1)
 				)
 			)
