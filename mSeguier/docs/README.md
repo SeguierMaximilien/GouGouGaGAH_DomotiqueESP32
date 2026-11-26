@@ -28,10 +28,25 @@ Pistes uniquement horizontales, verticales ou à 45°, sans angle droit (coins c
 - Exception : pastilles 17 et 30 de U1, pastille 2 de U2, pastille 2 de U3 et pastille 2 de U6 en connexion pleine, les rayons thermiques y
   étant bloqués par les pistes voisines (sinon erreur DRC « frein thermique incomplet »). 
 
+## Points de test
+Bloc de 9 points de test (TP1 à TP9) regroupé entre U2 (BH1750), U4 (MQ) et la piste +5V, hors de la zone « Exclusion 230V ».
+Empreinte `TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm` (pastille traversante 2 mm, perçage 1 mm : pointe de sonde, grippe-fil ou fil soudé), pas de 5 mm, nom du signal sérigraphié sous chaque pastille.
+
+Disposition (vue de dessus) :
+```
+        SDA   SCL   RELAIS  MQ 5V      (TP4, TP5, TP8, TP7)
+  5V    3V3   GND   MQ      GND        (TP3, TP2, TP1, TP6, TP9)
+```
+- RELAIS = commande du MOSFET (GPIO10), MQ 5V = sortie AO du capteur avant le pont, MQ = après le pont (entrée GPIO1).
+- Les deux GND sont reliés par les plans de masse (pas de piste GND).
+- Chaque point est relié par une courte dérivation qui part à 45° d'une piste existante ; +3V3 passe par un via (103, 101).
+- Bus SPI non ramené : il faudrait traverser toute la carte (sous l'écran et la DevKit), et ses signaux restent accessibles sur les connecteurs de l'écran et du RC522.
+
 ## Composants
 Pas de condensateurs : C1, C2 et C3 ont été retirés à la demande (les modules ont déjà les leurs).
 
 ## Historique
+- 2026-11-26 : ajout du bloc de 9 points de test (schéma + PCB), zones re-remplies, DRC 0/0/0.
 - 2026-11-18 : la carte MuseLab nanoESP32-C6 est remplacée par l'ESP32-C6 DevKit fourni par l'IUT (`lib/ESP32-C6DevKitGEII.kicad_sym`, `pretty/ESP32-C6DevKitGEII.pretty`). Mêmes GPIO qu'avant (conformes à `pinout.h`). Pistes re-routées (Freerouting 2.5, pistes à 45°), contacts du relais inchangés.
 - Correction de l'empreinte fournie : ses pastilles étaient numérotées 1-26 puis 29-32, alors que le symbole va de 1 à 30. Les pastilles 29, 30, 31, 32 sont renommées 27, 28, 29, 30 (vérifié avec les noms des broches sérigraphiés : 27 = GPIO16/TX, 28 = GPIO3, 29 = GPIO2, 30 = GND). Sans ça, GND du symbole tombait sur GPIO3.
 
