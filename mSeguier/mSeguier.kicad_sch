@@ -9008,7 +9008,7 @@
 		(on_board yes)
 		(in_pos_files no)
 		(dnp no)
-		(uuid "bd44d8ef-7d27-480c-aa1d-a0e450ea7c83")
+		(uuid "f7e8d7ab-d15e-4b54-96ff-88c6ba8370e6")
 		(property "Reference" "TP1"
 			(at 181.61 215.39 0)
 			(show_name no)
@@ -9019,7 +9019,7 @@
 				)
 			)
 		)
-		(property "Value" "GND"
+		(property "Value" "MQ"
 			(at 181.61 217.17 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9029,7 +9029,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D2.0mm"
 			(at 186.69000000000003 222.25 0)
 			(hide yes)
 			(show_name no)
@@ -9063,7 +9063,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "ac586751-ca52-4408-8e80-e5ed7128782d")
+			(uuid "a28d5496-e5d0-46fa-8e44-878796b4c6cc")
 		)
 		(instances
 			(project "mSeguier"
@@ -9082,84 +9082,17 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "225c8499-c3db-4891-97ad-4abed9c499b6")
+		(uuid "08b47a6b-8a9c-4ff2-9efe-4da292e4c6ec")
 	)
-	(symbol
-		(lib_id "power:GND")
+	(label "MQ_AO"
 		(at 181.61 227.33 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "f7852c14-1dee-4c67-966d-1a2e55571b40")
-		(property "Reference" "#PWR28"
-			(at 181.61 233.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
+			(justify left bottom)
 		)
-		(property "Value" "GND"
-			(at 181.61 231.14 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 181.61 227.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 181.61 227.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\""
-			(at 181.61 227.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "dcc8b437-4649-46e5-a215-3b111e45ec15")
-		)
-		(instances
-			(project "mSeguier"
-				(path "/38d7f9fb-f311-5526-9897-64ead4502f63"
-					(reference "#PWR28")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "7ec06fb2-5383-4cbc-a92a-647fe25416eb")
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
@@ -9171,7 +9104,7 @@
 		(on_board yes)
 		(in_pos_files no)
 		(dnp no)
-		(uuid "5d87e582-8970-47d1-b5f3-9bf77b30a79d")
+		(uuid "7ce8b030-22ad-4cdc-bff7-4535a69e67cc")
 		(property "Reference" "TP2"
 			(at 194.31 215.39 0)
 			(show_name no)
@@ -9182,7 +9115,7 @@
 				)
 			)
 		)
-		(property "Value" "3V3"
+		(property "Value" "SDA"
 			(at 194.31 217.17 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9192,7 +9125,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D2.0mm"
 			(at 199.39000000000001 222.25 0)
 			(hide yes)
 			(show_name no)
@@ -9226,7 +9159,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "2488d3ed-f6cd-493c-9439-d685db81edbf")
+			(uuid "4e6f916b-08fa-4c8e-bd1a-3da4cd3ac928")
 		)
 		(instances
 			(project "mSeguier"
@@ -9245,84 +9178,17 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b3fa5a54-41d0-462a-9dd8-940e8bc5fbbd")
+		(uuid "d187ad2b-f286-4bbe-9eca-be181ce857c9")
 	)
-	(symbol
-		(lib_id "power:+3V3")
-		(at 194.31 227.33 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "f7a97659-e2b4-46fe-89ae-ba26ae226431")
-		(property "Reference" "#PWR29"
-			(at 194.31 233.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+	(label "I2C_SDA"
+		(at 194.31 227.33 0)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
+			(justify left bottom)
 		)
-		(property "Value" "+3V3"
-			(at 194.31 231.14 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 194.31 227.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 194.31 227.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 194.31 227.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "72455045-86dd-497b-b9d6-e92bdc141821")
-		)
-		(instances
-			(project "mSeguier"
-				(path "/38d7f9fb-f311-5526-9897-64ead4502f63"
-					(reference "#PWR29")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "8bf010b7-6d1e-4554-8719-d573cd488289")
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
@@ -9334,7 +9200,7 @@
 		(on_board yes)
 		(in_pos_files no)
 		(dnp no)
-		(uuid "ad793651-351e-46dd-a364-3310d5b76935")
+		(uuid "7306b989-0abb-4fd1-8976-4705e4642eaa")
 		(property "Reference" "TP3"
 			(at 207.01 215.39 0)
 			(show_name no)
@@ -9345,7 +9211,7 @@
 				)
 			)
 		)
-		(property "Value" "5V"
+		(property "Value" "SCL"
 			(at 207.01 217.17 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9355,7 +9221,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D2.0mm"
 			(at 212.09 222.25 0)
 			(hide yes)
 			(show_name no)
@@ -9389,7 +9255,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "ce6f66f0-6eae-4141-8a46-851c420e717e")
+			(uuid "e9b2e974-c7d3-4709-99cb-441da7b25980")
 		)
 		(instances
 			(project "mSeguier"
@@ -9408,84 +9274,17 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "82a2c9b6-1e75-4564-b9da-aa9685189664")
+		(uuid "a2ad8e21-1a7b-4608-a8ad-9e85d9cc161d")
 	)
-	(symbol
-		(lib_id "power:+5V")
-		(at 207.01 227.33 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "87ff7f89-92cb-4852-b5ae-4baa58ede4a1")
-		(property "Reference" "#PWR30"
-			(at 207.01 233.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+	(label "I2C_SCL"
+		(at 207.01 227.33 0)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
+			(justify left bottom)
 		)
-		(property "Value" "+5V"
-			(at 207.01 231.14 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 207.01 227.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 207.01 227.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 207.01 227.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "04e3b5f6-ea54-435e-aa09-2060980190fb")
-		)
-		(instances
-			(project "mSeguier"
-				(path "/38d7f9fb-f311-5526-9897-64ead4502f63"
-					(reference "#PWR30")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "8cb5e74a-77d8-4595-9984-5a909257047c")
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
@@ -9497,7 +9296,7 @@
 		(on_board yes)
 		(in_pos_files no)
 		(dnp no)
-		(uuid "0fc9a00b-e4de-41eb-a87a-1e51fc0d9604")
+		(uuid "606dfa96-cd51-4882-bc85-81c30ddc0b93")
 		(property "Reference" "TP4"
 			(at 219.71 215.39 0)
 			(show_name no)
@@ -9508,7 +9307,7 @@
 				)
 			)
 		)
-		(property "Value" "SDA"
+		(property "Value" "RELAIS"
 			(at 219.71 217.17 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9518,7 +9317,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D2.0mm"
 			(at 224.79000000000002 222.25 0)
 			(hide yes)
 			(show_name no)
@@ -9552,7 +9351,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "1c547007-f00c-4c7a-813b-811d5620bc86")
+			(uuid "4e4e6bda-a204-45fb-b795-a038a9dfb792")
 		)
 		(instances
 			(project "mSeguier"
@@ -9571,9 +9370,9 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "4c5e5c76-b507-4a74-a231-2768addd1541")
+		(uuid "994cf996-4506-4358-8251-8438aad1c4d1")
 	)
-	(label "I2C_SDA"
+	(label "RELAY_CMD"
 		(at 219.71 227.33 0)
 		(effects
 			(font
@@ -9581,7 +9380,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "bf91b903-fec2-425c-abff-ef426ca250e8")
+		(uuid "b6b3cfe1-1678-4fad-8be7-c1ec488230c8")
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
@@ -9593,7 +9392,7 @@
 		(on_board yes)
 		(in_pos_files no)
 		(dnp no)
-		(uuid "0ca69a12-aee3-47ab-90ae-7abc3a5b0e37")
+		(uuid "e921df6d-04cb-4dfc-8780-473ebbe13029")
 		(property "Reference" "TP5"
 			(at 232.41 215.39 0)
 			(show_name no)
@@ -9604,7 +9403,7 @@
 				)
 			)
 		)
-		(property "Value" "SCL"
+		(property "Value" "MQ 5V"
 			(at 232.41 217.17 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9614,7 +9413,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D2.0mm"
 			(at 237.49 222.25 0)
 			(hide yes)
 			(show_name no)
@@ -9648,7 +9447,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "87bd2823-5e93-4c26-92d8-5ecde42a19fe")
+			(uuid "76e078cf-c779-4599-858f-d2254e382754")
 		)
 		(instances
 			(project "mSeguier"
@@ -9667,9 +9466,9 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9a16d719-19c7-4fdb-8d9e-281289b6ce4b")
+		(uuid "d31e31fa-9305-4a30-b037-593727deaf72")
 	)
-	(label "I2C_SCL"
+	(label "MQ_AO_5V"
 		(at 232.41 227.33 0)
 		(effects
 			(font
@@ -9677,462 +9476,11 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "931c8a79-e673-42f3-9060-6f11e319f2fc")
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 245.11 222.25 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "7df60f81-5c43-49f0-a75b-293906ff16a2")
-		(property "Reference" "TP6"
-			(at 245.11 215.39 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "MQ"
-			(at 245.11 217.17 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm"
-			(at 250.19000000000003 222.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 250.19000000000003 222.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 245.11 222.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "66c0fe58-a25e-4728-9a4c-cf44f2c86a71")
-		)
-		(instances
-			(project "mSeguier"
-				(path "/38d7f9fb-f311-5526-9897-64ead4502f63"
-					(reference "TP6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 245.11 222.25) (xy 245.11 227.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2d1007f9-608f-414d-9108-a93b79b2eb90")
-	)
-	(label "MQ_AO"
-		(at 245.11 227.33 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "da873c4a-9dad-4cab-ba54-f5df2156ed38")
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 257.81 222.25 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "bce41056-235e-49a6-90d7-52a8b3953699")
-		(property "Reference" "TP7"
-			(at 257.81 215.39 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "MQ 5V"
-			(at 257.81 217.17 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm"
-			(at 262.89 222.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 262.89 222.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 257.81 222.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fb50d2c5-4aca-41af-a92c-874fd53fa9da")
-		)
-		(instances
-			(project "mSeguier"
-				(path "/38d7f9fb-f311-5526-9897-64ead4502f63"
-					(reference "TP7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 257.81 222.25) (xy 257.81 227.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "57b86fd9-0da5-4dfc-8504-e33bffac95a9")
-	)
-	(label "MQ_AO_5V"
-		(at 257.81 227.33 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "7d80d0cd-4af8-4278-8161-3e2cdcf3efe8")
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 270.51 222.25 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "b312a5d1-36f3-4301-9057-ba18f2d24599")
-		(property "Reference" "TP8"
-			(at 270.51 215.39 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "RELAIS"
-			(at 270.51 217.17 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm"
-			(at 275.59 222.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 275.59 222.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 270.51 222.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a4b22a6c-b673-4891-a555-ce2c2fee6777")
-		)
-		(instances
-			(project "mSeguier"
-				(path "/38d7f9fb-f311-5526-9897-64ead4502f63"
-					(reference "TP8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 270.51 222.25) (xy 270.51 227.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3dda2d91-d6aa-4527-8c2a-eb193760c6ac")
-	)
-	(label "RELAY_CMD"
-		(at 270.51 227.33 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "9a6a5393-9480-4a95-832e-a827d718e80b")
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 283.21 222.25 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "f20ea0fb-5493-4dfe-a384-ce6aef44cd43")
-		(property "Reference" "TP9"
-			(at 283.21 215.39 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 283.21 217.17 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm"
-			(at 288.28999999999996 222.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 288.28999999999996 222.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 283.21 222.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "64397e36-d429-40a7-9567-ff51c72ba27d")
-		)
-		(instances
-			(project "mSeguier"
-				(path "/38d7f9fb-f311-5526-9897-64ead4502f63"
-					(reference "TP9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
-			(xy 283.21 222.25) (xy 283.21 227.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6a9f1c7b-b224-4cd3-8297-a4ab2b1087a4")
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 283.21 227.33 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "a7b9dd5c-0fe9-4a3f-9d97-4ff4bb68147f")
-		(property "Reference" "#PWR31"
-			(at 283.21 233.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 283.21 231.14 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 283.21 227.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 283.21 227.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\""
-			(at 283.21 227.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c9c0192b-9597-4d1e-925a-4005c9cd133d")
-		)
-		(instances
-			(project "mSeguier"
-				(path "/38d7f9fb-f311-5526-9897-64ead4502f63"
-					(reference "#PWR31")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "1b553523-7da1-405d-a78d-b01e223d84fd")
 	)
 	(rectangle
 		(start 172.72 203.2)
-		(end 300.99 248.92)
+		(end 251.46 248.92)
 		(stroke
 			(width 0)
 			(type dash)
@@ -10140,9 +9488,9 @@
 		(fill
 			(type none)
 		)
-		(uuid "8162b2ae-bebd-4cc0-ba7c-5429a90d6db3")
+		(uuid "d16503b2-2bbf-4142-b307-4c2c1a2e1209")
 	)
-	(text "Points de test (regroupes sur le PCB entre U2, U4 et la piste +5V)"
+	(text "Points de test (regroupes sur le PCB sous U2)"
 		(exclude_from_sim no)
 		(at 173.99 204.47 0)
 		(effects
@@ -10152,9 +9500,9 @@
 			)
 			(justify left top)
 		)
-		(uuid "b3f8b1b1-8df5-4cf1-aa79-101a2c0cc0e2")
+		(uuid "28c10619-8424-4517-91da-0020517697df")
 	)
-	(text "Pastilles THT 2 mm (percage 1 mm) : pointe de sonde, grippe-fil ou fil soude.\nBus SPI non ramene : trop de croisements, et ses signaux restent accessibles sur les connecteurs de l'ecran et du RC522."
+	(text "Pastilles CMS 2 mm, face dessus, sans percage.\nSignaux qui varient seulement : alimentations et GND\nse testent en continuite ou sur les composants.\nMQ 5V = sortie AO du MQ avant le pont (0 a 5 V).\nSPI non ramene : accessible sur l'ecran et le RC522."
 		(exclude_from_sim no)
 		(at 173.99 236.22 0)
 		(effects
@@ -10163,7 +9511,7 @@
 			)
 			(justify left top)
 		)
-		(uuid "1f926427-274c-4167-955f-459f9dd4182a")
+		(uuid "5e672636-8798-49b9-a902-1b89334d2078")
 	)
 	(sheet_instances
 		(path "/"
