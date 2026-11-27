@@ -318,6 +318,10 @@ le relais K1.</p>
 <li>la fiche d'intervention, à remplir pour chaque carte contrôlée ou dépannée.</li>
 </ul>
 <p>Le code du programme de test utilisé par la procédure figure en annexe (annexe 1).</p>
+<div class="info"><b>Erratum du dossier de conception.</b> Deux points du dossier de conception remis en
+novembre 2026 sont corrigés ici : la carte microcontrôleur est l'ESP32-C6 DevKit fournie par l'IUT, et non une
+carte MuseLab nanoESP32-C6 ; la diode de roue libre D1 est une 1N4007, et non une 1N4004. Le schéma structurel
+et la nomenclature du présent dossier font foi.</div>
 """
 
 
