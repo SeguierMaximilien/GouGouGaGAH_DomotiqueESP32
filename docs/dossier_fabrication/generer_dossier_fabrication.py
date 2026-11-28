@@ -397,7 +397,7 @@ APPRO = [
     ("D1", "Farnell", "4245044", "0,106 €", "5", "[17]", ""),
     ("K1", "–", "–", "n. c.", "–", "[18] [19]", "Référence arrêtée chez Farnell et RS : prix non disponible. Un remplaçant doit garder l'empreinte Finder 30.22"),
     ("J1", "Farnell", "3041530", "1,74 €", "1", "[20]", "Phoenix Contact 1715734, pas de 5,08 mm. L'empreinte est au pas de 5,00 mm (référence exacte 1715721, prix non relevé) : écart de 0,16 mm sur 3 points"),
-    ("PCB", "JLCPCB", "–", "voir cotation", "5", "[2]", "Prix de la cotation (capture mSeguier_jlcpcb_ok)"),
+    ("PCB", "JLCPCB", "Cotation du 28/11/2026", "2,28 $", "5", "Figure 2", "11,40 $ HT les 5 cartes (FR-4, 2 couches, 1,6 mm), livraison DHL 23,21 $ en plus"),
 ]
 
 
@@ -414,6 +414,7 @@ spécialisés (Gotronic, Otronic). Le prix de la carte nue est celui de la cotat
 {N.tableau(tab, "Approvisionnement des composants : fournisseur, référence et prix unitaire HT relevés le 28/11/2026", "sites des fournisseurs cités [9] à [20]")}
 </div>
 <p style="font-size:9pt"><sup>*</sup> Prix affiché sans mention HT ou TTC. <sup>**</sup> Prix de la référence 1 kΩ de la même série.</p>
+{N.figure(KICAD / "docs" / "mSeguier_jlcpcb_ok.png", "Cotation de la carte mSeguier sur le site de JLCPCB : carte 2 couches de 170 × 90 mm détectée, 5 exemplaires pour 11,40 $ hors livraison", "capture d'écran réalisée par nos soins sur jlcpcb.com le 28/11/2026", "width:100%")}
 <p>Hors relais, écran et circuit imprimé, le coût des composants s'élève à 23,39 € HT pour une carte
 (somme des prix unitaires). Les quantités minimales de vente (lots de 5 ou de 10) portent le montant
 réellement commandé à 26,73 € HT. Deux composants posent un problème d'approvisionnement : le relais Finder
@@ -460,9 +461,9 @@ routage [1] (cf. Tableau 3). Les pistes sont horizontales, verticales ou à 45°
 de largeur. Les liaisons de masse passent uniquement par les plans de masse.</p>
 {N.tableau(regles, "Classes d'équipotentielles utilisées pour le routage", "d'après les consignes de routage SAE3.ESE.01.02 [1]")}
 {h(2, "s33")}
-<p>La Figure 2 montre la face dessus : écran et lecteur RFID en haut, carte ESP32-C6 en bas à gauche avec ses
+<p>La Figure 3 montre la face dessus : écran et lecteur RFID en haut, carte ESP32-C6 en bas à gauche avec ses
 ports USB au bord de la carte, bloc de points de test sous le capteur de lumière, relais et bornier au bord droit.
-La Figure 3 montre la face dessous, vue par transparence depuis le dessus puis retournée (vue miroir).</p>
+La Figure 4 montre la face dessous, vue par transparence depuis le dessus puis retournée (vue miroir).</p>
 {N.figure(FIG / "pcb_dessus.svg", "Routage de la face dessus (cuivre F.Cu, sérigraphie et contour)", "figure réalisée par nos soins sous KiCad 10", "width:100%")}
 {N.figure(FIG / "pcb_dessous.svg", "Routage de la face dessous (cuivre B.Cu, sérigraphie et contour, vue miroir)", "figure réalisée par nos soins sous KiCad 10", "width:100%")}
 {N.figure(FIG / "rendu_dessus.png", "Rendu 3D de la carte nue, face dessus", "figure réalisée par nos soins sous KiCad 10", "width:80%")}
