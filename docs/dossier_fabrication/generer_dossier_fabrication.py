@@ -104,6 +104,10 @@ table.nomen th:nth-child(1) { width: 11%; } table.nomen th:nth-child(2) { width:
 table.nomen th:nth-child(3) { width: 21%; } table.nomen th:nth-child(4) { width: 13%; }
 table.nomen th:nth-child(5) { width: 17%; } table.nomen th:nth-child(6) { width: 15%; }
 table.nomen th:nth-child(7) { width: 18%; }
+table.appro { table-layout: fixed; }
+table.appro th:nth-child(1) { width: 8%; } table.appro th:nth-child(2) { width: 11%; }
+table.appro th:nth-child(3) { width: 17%; } table.appro th:nth-child(4) { width: 11%; }
+table.appro th:nth-child(5) { width: 7%; } table.appro th:nth-child(6) { width: 8%; }
 table.nomen td { word-wrap: break-word; overflow-wrap: anywhere; hyphens: none; }
 ol.biblio { list-style: none; padding-left: 0; text-align: left; }
 ol.biblio li { margin-bottom: 5px; }
@@ -266,6 +270,8 @@ SECTIONS = [
     (1, "intro", "Introduction"),
     (1, "s1", "1. Schéma structurel"),
     (1, "s2", "2. Nomenclature des composants"),
+    (2, "s21", "2.1 Liste des composants"),
+    (2, "s22", "2.2 Approvisionnement et coût"),
     (1, "s3", "3. Routage de la carte"),
     (2, "s31", "3.1 Caractéristiques de la carte"),
     (2, "s32", "3.2 Règles de routage"),
@@ -364,6 +370,7 @@ def partie_nomenclature():
                 lignes, "nomen")
     return f"""
 {h(1, "s2")}
+{h(2, "s21")}
 <p>La nomenclature (cf. Tableau 1) liste les composants du schéma, avec leur valeur, leur empreinte et les
 précautions de montage. Les repères, les valeurs et les empreintes sont ceux du projet KiCad. La carte ne
 comporte aucun condensateur : les modules (capteurs, écran, lecteur RFID et carte ESP32-C6) intègrent déjà
@@ -373,6 +380,45 @@ leurs condensateurs de découplage.</p>
 </div>
 <p>Les modules sont montés sur la face dessus. Le relais, la diode, le transistor, les résistances et le
 bornier sont des composants traversants, soudés à la main sur la face dessous.</p>
+{partie_appro()}
+"""
+
+APPRO = [
+    # repère, fournisseur, référence fournisseur, prix unitaire HT, conditionnement, source, remarque
+    ("U1", "Mouser", "356-ESP32C6DKC1N8", "8,15 €", "1", "[9]", "Équivalent Espressif ESP32-C6-DevKitC-1 ; la carte GEII (2 × 15 broches) est fournie par l'IUT et n'a pas le même brochage"),
+    ("U2", "Stock87", "5037 (GY-302)", "1,95 €<sup>*</sup>", "1", "[10]", "Module identique à l'empreinte"),
+    ("U3", "Otronic", "OT2313-B26", "1,17 €", "1", "[11]", "Module BMP280 3,3 V ; brochage 6 points à vérifier à la réception"),
+    ("U4", "Otronic", "OT2052-D59", "2,25 €", "1", "[12]", "Module MQ-9"),
+    ("U5", "Gotronic", "34942", "7,42 €", "1", "[13]", "Module Joy-it RC522"),
+    ("U6", "–", "–", "n. c.", "–", "–", "Module MSP2402 non trouvé chez un distributeur reconnu ; l'Adafruit 2478 (RS 124-5490, 27,79 € HT) n'a pas le même brochage"),
+    ("R1", "Farnell", "9341102 (MF25 1K)", "0,051 €", "10", "[14]", ""),
+    ("R2", "Farnell", "MF25 2K (même série)", "0,051 €<sup>**</sup>", "10", "[14]", "Prix de la série, non relevé pour la valeur 2 kΩ"),
+    ("Q1", "Farnell", "1017689", "0,499 €", "5", "[15]", "Produit en fin de vie : RS ne le vend plus [16]"),
+    ("D1", "Farnell", "4245044", "0,106 €", "5", "[17]", ""),
+    ("K1", "–", "–", "n. c.", "–", "[18] [19]", "Référence arrêtée chez Farnell et RS : prix non disponible. Un remplaçant doit garder l'empreinte Finder 30.22"),
+    ("J1", "Farnell", "3041530", "1,74 €", "1", "[20]", "Phoenix Contact 1715734, pas de 5,08 mm. L'empreinte est au pas de 5,00 mm (référence exacte 1715721, prix non relevé) : écart de 0,16 mm sur 3 points"),
+    ("PCB", "JLCPCB", "–", "voir cotation", "5", "[2]", "Prix de la cotation (capture mSeguier_jlcpcb_ok)"),
+]
+
+
+def partie_appro():
+    lignes = [[f"<b>{r}</b>", f, e(ref), prix, cond, src, e(rem)] for r, f, ref, prix, cond, src, rem in APPRO]
+    tab = table(["Repère", "Fournisseur", "Référence fournisseur", "Prix unitaire HT", "Qté mini", "Source", "Remarque"], lignes, "appro")
+    return f"""
+{h(2, "s22")}
+<p>Le Tableau 2 indique, pour chaque composant, un fournisseur reconnu, sa référence de commande et le prix
+unitaire hors taxes relevé sur son site le 28 novembre 2026. Les distributeurs de composants (Farnell, Mouser)
+sont retenus en priorité ; les modules pour Arduino, absents de leurs catalogues, proviennent de revendeurs
+spécialisés (Gotronic, Otronic). Le prix de la carte nue est celui de la cotation JLCPCB.</p>
+<div style="font-size:8.5pt">
+{N.tableau(tab, "Approvisionnement des composants : fournisseur, référence et prix unitaire HT relevés le 28/11/2026", "sites des fournisseurs cités [9] à [20]")}
+</div>
+<p style="font-size:9pt"><sup>*</sup> Prix affiché sans mention HT ou TTC. <sup>**</sup> Prix de la référence 1 kΩ de la même série.</p>
+<p>Hors relais, écran et circuit imprimé, le coût des composants s'élève à 23,39 € HT pour une carte
+(somme des prix unitaires). Les quantités minimales de vente (lots de 5 ou de 10) portent le montant
+réellement commandé à 26,73 € HT. Deux composants posent un problème d'approvisionnement : le relais Finder
+30.22.7.005.0010 n'est plus distribué par Farnell ni par RS, et le transistor BS270 est en fin de vie. Une
+révision de la carte devra choisir des équivalents disponibles et vérifier leur empreinte.</p>
 """
 
 
@@ -410,7 +456,7 @@ signaux sur le bornier et sur les points de test.</li>
 parité avec le schéma, ne signale ni erreur, ni avertissement, ni connexion non routée.</p>
 {h(2, "s32")}
 <p>Les largeurs de pistes et les isolations suivent les classes d'équipotentielles imposées par les consignes de
-routage [1] (cf. Tableau 2). Les pistes sont horizontales, verticales ou à 45°, sans angle droit ni changement
+routage [1] (cf. Tableau 3). Les pistes sont horizontales, verticales ou à 45°, sans angle droit ni changement
 de largeur. Les liaisons de masse passent uniquement par les plans de masse.</p>
 {N.tableau(regles, "Classes d'équipotentielles utilisées pour le routage", "d'après les consignes de routage SAE3.ESE.01.02 [1]")}
 {h(2, "s33")}
@@ -422,7 +468,7 @@ La Figure 3 montre la face dessous, vue par transparence depuis le dessus puis r
 {N.figure(FIG / "rendu_dessus.png", "Rendu 3D de la carte nue, face dessus", "figure réalisée par nos soins sous KiCad 10", "width:80%")}
 {h(2, "s34")}
 <p>Les fichiers de fabrication ont été générés dans le dossier <span class="mono">fab</span> du projet selon la
-méthode préconisée par le fabricant JLCPCB [2] (cf. Tableau 3). Le dossier compressé est déposé sur le site du
+méthode préconisée par le fabricant JLCPCB [2] (cf. Tableau 4). Le dossier compressé est déposé sur le site du
 fabricant pour obtenir un devis ; la capture d'écran de la cotation acceptée est placée dans le dossier
 <span class="mono">docs</span> sous le nom <span class="mono">mSeguier_jlcpcb_ok</span>.</p>
 {N.tableau(fichiers, "Fichiers de fabrication transmis au fabricant")}
@@ -492,7 +538,7 @@ par le +3V3 de la carte.</div>
 stable (24 h pour un capteur neuf, selon le fabricant). Le test 4.5 est donc réalisé en dernier parmi les
 mesures du capteur de gaz.</div>
 {h(2, "s42")}
-<p>Les points de test TP1 à TP5 sont regroupés sous le capteur de lumière U2 (cf. Tableau 4). Les alimentations
+<p>Les points de test TP1 à TP5 sont regroupés sous le capteur de lumière U2 (cf. Tableau 5). Les alimentations
 et la masse n'ont pas de point de test : leurs valeurs sont constantes et se mesurent directement sur les broches
 des modules. La pince de masse de l'oscilloscope se raccorde sur une broche GND d'un module.</p>
 {N.tableau(pm, "Points de mesure utilisés par la procédure de test")}
@@ -576,7 +622,7 @@ avoir renseigné le fichier <span class="mono">secrets.h</span> (réseau WiFi) e
 <li><b>5.4</b> Un badge autorisé déclenche le relais pendant 3 s.</li>
 </ul>
 {h(2, "s46")}
-<p>Le Tableau 5 regroupe les défauts les plus probables, leur cause et la vérification à réaliser. Il sert de guide
+<p>Le Tableau 6 regroupe les défauts les plus probables, leur cause et la vérification à réaliser. Il sert de guide
 de maintenance : après réparation, les tests de la fonction concernée puis les tests 3 et 5 sont refaits et
 consignés sur la fiche d'intervention.</p>
 <div style="font-size:9.5pt">{N.tableau(diag, "Guide de diagnostic des défauts courants")}</div>
@@ -705,6 +751,18 @@ Disponible sur : https://www.bosch-sensortec.com/media/boschsensortec/downloads/
 <li>[7] ESPRESSIF SYSTEMS. <i>ESP32-C6, Get Started (ESP-IDF v5.5.1)</i> [en ligne].
 Disponible sur : https://docs.espressif.com/projects/esp-idf/en/v5.5.1/esp32c6/get-started/index.html</li>
 <li>[8] HANDSONTEC. <i>RC522 RFID Development Kit</i> [en ligne]. Disponible sur : https://www.handsontec.com/dataspecs/RC522.pdf</li>
+<li>[9] MOUSER ELECTRONICS. <i>ESP32-C6-DevKitC-1-N8</i> [en ligne]. Consulté le 28/11/2026. Disponible sur : https://eu.mouser.com/ (référence 356-ESP32C6DKC1N8)</li>
+<li>[10] STOCK87. <i>Module GY-302 capteur de luminosité digital BH1750</i> [en ligne]. Consulté le 28/11/2026. Disponible sur : https://www.stock87.fr/module-gy302-capteur-de-luminosite-digital-bh1750-xml-243_363-920.html</li>
+<li>[11] OTRONIC. <i>Module de capteur de pression barométrique numérique BMP280</i> [en ligne]. Consulté le 28/11/2026. Disponible sur : https://www.otronic.fr/fr/module-de-capteur-de-pression-barometrique-numerique-bmp280</li>
+<li>[12] OTRONIC. <i>Module capteur de gaz MQ-9</i> [en ligne]. Consulté le 28/11/2026. Disponible sur : https://www.otronic.fr/fr/module-capteur-de-gaz-mq-9</li>
+<li>[13] GO TRONIC. <i>Module RFID 13,56 MHz TAG RC522</i> [en ligne]. Consulté le 28/11/2026. Disponible sur : https://www.gotronic.fr/art-module-rfid-13-56-mhz-tag-rc522-25651.htm</li>
+<li>[14] FARNELL. <i>MF25 1K, résistance traversante 1 kΩ 250 mW 1 %</i> [en ligne]. Consulté le 28/11/2026. Disponible sur : https://fr.farnell.com/multicomp-pro/mf25-1k/resistance-1k-0-25w-1/dp/9341102</li>
+<li>[15] FARNELL. <i>BS270, MOSFET canal N 60 V TO-92</i> [en ligne]. Consulté le 28/11/2026. Disponible sur : https://fr.farnell.com/onsemi/bs270/transistor-mosfet-n-to-92/dp/1017689</li>
+<li>[16] RS COMPONENTS. <i>BS270 onsemi</i> [en ligne]. Consulté le 28/11/2026. Disponible sur : https://fr.rs-online.com/web/p/transistors-mosfet/8075184</li>
+<li>[17] FARNELL. <i>1N4007 Multicomp Pro, diode 1 kV 1 A DO-41</i> [en ligne]. Consulté le 28/11/2026. Disponible sur : https://fr.farnell.com/multicomp-pro/1n4007/diode-simple-1kv-1a-do-41/dp/4245044</li>
+<li>[18] FARNELL. <i>Finder 30.22.7.005.0010</i> [en ligne]. Consulté le 28/11/2026. Disponible sur : https://fr.farnell.com/finder/30-22-7-005-0010/relais-ci-dpco-5vdc/dp/1217368</li>
+<li>[19] RS COMPONENTS. <i>Finder 30.22.7.005.0010</i> [en ligne]. Consulté le 28/11/2026. Disponible sur : https://fr.rs-online.com/web/p/relais-de-signaux/4926580</li>
+<li>[20] FARNELL. <i>Phoenix Contact 1715734, bornier 3 points au pas de 5,08 mm</i> [en ligne]. Consulté le 28/11/2026. Disponible sur : https://nl.farnell.com/en-NL/phoenix-contact/1715734/terminal-block-wire-to-brd-3pos/dp/3041530</li>
 </ol>
 """
 
